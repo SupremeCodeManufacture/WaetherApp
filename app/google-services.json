@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "823663705846",
+    "firebase_url": "https://weather-40d77.firebaseio.com",
+    "project_id": "weather-40d77",
+    "storage_bucket": "weather-40d77.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823663705846:android:2e2c0eef09e28fa0",
+        "android_client_info": {
+          "package_name": "com.SupremeManufacture.weather"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823663705846-55s6hdmjbnmrt0v8jr3heucum02knnj5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHy25onjhyd61MPfndera7e97TmJeiSX8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">weather</string>
+
+    <string name="txt_warn">Warning</string>
+    <string name="txt_no_loc_permissions">You did not accept permission for location detection. You can turn it on manually through Settings -> Applications -> This application -> Permissions</string>
+    <string name="txt_dismiss">Dismiss</string>
+
+    <string name="txt_oops">Oops, something went wrong, try again later.</string>
+    <string name="txt_err_no_network">Please connect to the Internet and try again.</string>
+    <string name="txt_upgrade_connectin">Your connection now seems bad. Please try again later</string>
+
+
+    <string name="txt_no_loc">Location service is disabled. Please turn it on from device settings</string>
+    <string name="txt_enable">Open settings</string>
+
+
+</resources>
