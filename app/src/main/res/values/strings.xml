@@ -13,5 +13,16 @@
     <string name="txt_no_loc">Location service is disabled. Please turn it on from device settings</string>
     <string name="txt_enable">Open settings</string>
 
+    <string name="txt_details">Details</string>
+    <string name="txt_next_days">Weather for next 5 days</string>
+    <string name="txt_detailed">Detailed</string>
+
+    <string name="txt_wind">Wind</string>
+    <string name="txt_uv">Uv index</string>
+    <string name="txt_feels">Feels like</string>
+    <string name="txt_press">Pressure</string>
+    <string name="txt_hum">Humidity</string>
+    <string name="txt_vis">Visibility</string>
+
 
 </resources>
