@@ -3,14 +3,16 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
 
+    dataBinding {
+        enabled = true
+    }
+
     defaultConfig {
         applicationId "com.SupremeManufacture.weather"
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-
-        dataBinding.enabled = true
     }
 
     buildTypes {
@@ -38,7 +40,6 @@ dependencies {
     implementation 'io.reactivex:rxandroid:1.2.1'
 
     implementation 'com.google.firebase:firebase-core:16.0.7'
-
 }
 
 apply plugin: 'com.google.gms.google-services'

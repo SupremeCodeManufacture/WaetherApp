@@ -3,15 +3,11 @@ package logic.network;
 
 import com.SupremeManufacture.weather.R;
 
-import java.util.List;
-import java.util.Map;
-
 import data.App;
+import data.model.DataRs;
 import logic.async_await.OnAsyncDoneRsObjListener;
-import logic.helpers.DataFormatConverter;
 import logic.helpers.MyLogs;
 import logic.listeners.OnFetchDataErrListener;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,46 +15,24 @@ import retrofit2.Response;
 
 public class RequestManager {
 
-
-    public static void execGetSalons(String reqPath,
-                                     Map<String, String> queryParams,
-                                     List<String> filters,
-                                     OnAsyncDoneRsObjListener onDoneListener,
-                                     OnFetchDataErrListener errListener) {
-        Call<ResponseBody> call = RestClient.get().getSalonsReq(reqPath, queryParams, filters);
-        execAsyncReq(call, onDoneListener, errListener);
-    }
-
-    public static void execGetSalons(String reqPath,
-                                     OnAsyncDoneRsObjListener onDoneListener,
-                                     OnFetchDataErrListener errListener) {
-        Call<ResponseBody> call = RestClient.get().getReq(reqPath);
-        execAsyncReq(call, onDoneListener, errListener);
-    }
-
-    public static void execPost(final String reqPath,
-                                final Map<String, String> params,
-                                final OnAsyncDoneRsObjListener onDoneListener,
-                                final OnFetchDataErrListener errListener) {
-        Call<ResponseBody> call = RestClient.get().postReqNew(reqPath, params);
-        execAsyncReq(call, onDoneListener, errListener);
-    }
-
-    private static void execAsyncReq(Call<ResponseBody> call,
+    public static void execGetSalons(String q,
                                      final OnAsyncDoneRsObjListener onDoneListener,
                                      final OnFetchDataErrListener errListener) {
+
         if (NetworkState.isNetworkAvailable()) {
-            call.enqueue(new Callback<ResponseBody>() {
+            String key = App.getAppCtx().getResources().getString(R.string.api_key);
+            String lang = "ru";//todo get user selected lang
+            String days = "3";
+
+            Call<DataRs> call = RestClient.get().getData(key, q, lang, days);
+            call.enqueue(new Callback<DataRs>() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, final Response<ResponseBody> response) {
+                public void onResponse(Call<DataRs> call, final Response<DataRs> response) {
                     if (response.isSuccessful()) {
                         MyLogs.LOG("RequestManager", "execAsyncReq", "isSuccessful");
 
-//                        DataBindUtil.asyncHandleSuccessReq(response, onDoneListener);
-                        String jsonStr = DataFormatConverter.getJsonRs(response);
-
                         if (onDoneListener != null)
-                            onDoneListener.onDone(jsonStr);
+                            onDoneListener.onDone(response.body());
 
                     } else {
                         MyLogs.LOG("RequestManager", "execAsyncReq", "onResponse --> ERROR not succesfull result");
@@ -68,7 +42,7 @@ public class RequestManager {
                 }
 
                 @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                public void onFailure(Call<DataRs> call, Throwable t) {
                     MyLogs.LOG("RequestManager", "execAsyncReq", "onFailure --> ERROR: " + t.getMessage());
                     t.printStackTrace();
                     if (errListener != null)

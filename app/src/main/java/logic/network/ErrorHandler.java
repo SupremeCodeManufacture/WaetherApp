@@ -4,7 +4,8 @@ import com.SupremeManufacture.weather.R;
 import com.google.gson.Gson;
 
 import data.App;
-import data.model.ErrObjData;
+import data.model.DataRs;
+import data.model.ErrObj;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
@@ -18,11 +19,11 @@ public class ErrorHandler {
         return App.getAppCtx().getResources().getString(R.string.txt_oops);
     }
 
-    public static String getErrMsgFromRs(Response<ResponseBody> response) {
+    public static String getErrMsgFromRs(Response<DataRs> response) {
         if (response != null && response.errorBody() != null) {
             try {
-                ErrObjData errObjData = new Gson().fromJson(response.errorBody().string(), ErrObjData.class);
-                if (errObjData != null && errObjData.getMessage() != null) return errObjData.getMessage();
+                ErrObj errObj = new Gson().fromJson(response.errorBody().string(), ErrObj.class);
+                if (errObj != null && errObj.getMessage() != null) return errObj.getMessage();
 
             } catch (Exception e) {
                 e.printStackTrace();

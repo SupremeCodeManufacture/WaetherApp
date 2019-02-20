@@ -23,6 +23,7 @@
     <string name="txt_press">Pressure</string>
     <string name="txt_hum">Humidity</string>
     <string name="txt_vis">Visibility</string>
+    <string name="txt_weather_24">Weather for 24 hours</string>
 
 
 </resources>

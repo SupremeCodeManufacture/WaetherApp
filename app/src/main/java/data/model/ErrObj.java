@@ -1,6 +1,6 @@
 package data.model;
 
-public class ErrObjData {
+public class ErrObj {
 
     private String message;
 
