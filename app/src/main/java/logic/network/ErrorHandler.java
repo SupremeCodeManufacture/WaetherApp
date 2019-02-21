@@ -1,6 +1,6 @@
 package logic.network;
 
-import com.SupremeManufacture.weather.R;
+import com.supreme.manufacture.weather.R;
 import com.google.gson.Gson;
 
 import data.App;

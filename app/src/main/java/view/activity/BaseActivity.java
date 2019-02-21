@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import com.google.android.material.snackbar.Snackbar;
 
 
-import com.SupremeManufacture.weather.R;
+import com.supreme.manufacture.weather.R;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;

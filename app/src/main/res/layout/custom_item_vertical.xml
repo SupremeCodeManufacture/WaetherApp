@@ -17,6 +17,7 @@
         tools:text="-88°C" />
 
     <View
+        android:id="@+id/view_temp"
         android:layout_width="20dp"
         android:layout_height="90dp"
         android:layout_margin="@dimen/material_s_half"

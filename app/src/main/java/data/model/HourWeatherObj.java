@@ -8,7 +8,7 @@ public class HourWeatherObj {
     private ConditionObj condition;
     private float wind_kph;
     private float wind_degree;
-    private float wind_dir;
+    private String wind_dir;
     private float pressure_mb;
     private float precip_mm;
     private int humidity;
@@ -65,11 +65,11 @@ public class HourWeatherObj {
         this.wind_degree = wind_degree;
     }
 
-    public float getWind_dir() {
+    public String getWind_dir() {
         return wind_dir;
     }
 
-    public void setWind_dir(float wind_dir) {
+    public void setWind_dir(String wind_dir) {
         this.wind_dir = wind_dir;
     }
 

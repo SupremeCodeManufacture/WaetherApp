@@ -1,7 +1,7 @@
 package logic.network;
 
 
-import com.SupremeManufacture.weather.R;
+import com.supreme.manufacture.weather.R;
 
 import data.App;
 import data.model.DataRs;

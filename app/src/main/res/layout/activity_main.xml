@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main_coord"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="view.activity.MainActivity">
@@ -338,6 +339,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/zone_today_hours"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/material_half"
@@ -345,6 +347,7 @@
                     android:background="@drawable/bg_rounded_semitransparent"
                     android:orientation="vertical"
                     android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
                     android:paddingBottom="@dimen/activity_horizontal_margin">
 
                     <TextView
@@ -668,6 +671,17 @@
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
+
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/progress_bar"
+            style="@android:style/Widget.ProgressBar.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/bg_progress_color"
+            android:visibility="invisible" />
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
