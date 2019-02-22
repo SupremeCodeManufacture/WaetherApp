@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.supreme.manufacture.weather.R;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import data.model.HourWeatherObj;
@@ -14,10 +16,10 @@ import logic.helpers.DataFormatConverter;
 
 public class HoursWeatherAdapter extends RecyclerView.Adapter<HoursWeatherAdapter.ViewHolder> {
 
-    private HourWeatherObj[] mData;
+    private  List<HourWeatherObj>  mData;
 
-    public HoursWeatherAdapter(HourWeatherObj[] array) {
-        this.mData = array;
+    public HoursWeatherAdapter(List<HourWeatherObj> list) {
+        this.mData = list;
     }
 
     @NonNull
@@ -28,7 +30,7 @@ public class HoursWeatherAdapter extends RecyclerView.Adapter<HoursWeatherAdapte
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
-        HourWeatherObj hourWeatherObj = mData[position];
+        HourWeatherObj hourWeatherObj = mData.get(position);
 
         if (hourWeatherObj != null) {
             viewHolder.tvTemp.setText(String.valueOf(hourWeatherObj.getTemp_c()) + " °C");
@@ -39,7 +41,7 @@ public class HoursWeatherAdapter extends RecyclerView.Adapter<HoursWeatherAdapte
 
     @Override
     public int getItemCount() {
-        return mData.length;
+        return mData.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

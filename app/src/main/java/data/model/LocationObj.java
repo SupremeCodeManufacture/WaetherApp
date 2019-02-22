@@ -6,6 +6,8 @@ public class LocationObj {
     private String region;
     private String country;
     private String localtime;
+    private double lon;
+    private double lat;
 
 
     public String getName() {
@@ -38,5 +40,21 @@ public class LocationObj {
 
     public void setLocaltime(String localtime) {
         this.localtime = localtime;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
     }
 }

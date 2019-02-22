@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/whole_loc_itm"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dim_2_rows_list_height_s"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_toStartOf="@+id/btn_delete"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_text_normal"
+            android:textSize="@dimen/txt_medium_xs"
+            tools:text="Moskow" />
+
+
+        <TextView
+            android:id="@+id/tv_descr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondary_text_normal"
+            android:textSize="@dimen/txt_small"
+            tools:text="Rossia" />
+
+    </LinearLayout>
+
+
+    <ImageButton
+        android:id="@+id/btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="-8dp"
+        android:layout_marginStart="@dimen/material_half"
+        android:layout_marginEnd="@dimen/material_half"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:onClick="onClick"
+        android:padding="8dp"
+        android:src="@mipmap/ic_delete"
+        android:tint="#DDDDDD" />
+
+</RelativeLayout>

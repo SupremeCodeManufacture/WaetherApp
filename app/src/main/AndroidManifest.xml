@@ -25,6 +25,15 @@
             </intent-filter>
         </activity>
 
+
+        <activity android:name="view.activity.PlacesActivity" />
+
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/key_maps" />
+
+
     </application>
 
 </manifest>

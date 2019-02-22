@@ -94,9 +94,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_toEndOf="@+id/tv_temp"
+                        android:text="°C"
                         android:textColor="@color/primary_text"
-                        android:textSize="32dp"
-                        tools:text="°C" />
+                        android:textSize="32dp" />
 
                     <TextView
                         android:id="@+id/tv_mood_type"
@@ -104,27 +104,27 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_temp"
                         android:textColor="@color/primary_text"
-                        android:textSize="28dp"
+                        android:textSize="22dp"
                         android:textStyle="bold"
-
                         tools:text="Tuman" />
                 </RelativeLayout>
 
 
                 <TextView
                     android:id="@+id/tv_details"
+                    style="@style/TextBoxTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginTop="100dp"
-                    android:layout_marginEnd="@dimen/material_half"
+                    android:layout_margin="-8dp"
+                    android:layout_marginTop="60dp"
                     android:layout_marginBottom="@dimen/material_half"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:drawableEnd="@mipmap/ic_arrow_small"
                     android:drawablePadding="@dimen/activity_horizontal_margin"
                     android:onClick="onClick"
-                    android:text="@string/txt_detailed"
-                    android:textColor="@color/primary_text"
-                    android:textSize="@dimen/txt_medium_xs" />
+                    android:padding="8dp"
+                    android:text="@string/txt_detailed" />
 
 
                 <LinearLayout
@@ -142,7 +142,7 @@
 
                         <TextView
                             android:id="@+id/tv_mood_today"
-                            style="@style/TextBox"
+                            style="@style/TextBoxS"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -164,12 +164,12 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_marginEnd="@dimen/material_half"
-                                tools:src="@color/primary_dark" />
+                                android:src="@color/primary_dark" />
 
                             <TextView
                                 android:id="@+id/tv_temp_min_today"
                                 style="@style/TextBox"
-                                android:layout_width="30dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="4dp"
                                 tools:text="-88" />
@@ -179,12 +179,12 @@
                                 android:layout_width="10dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="6dp"
-                                tools:text="/" />
+                                android:text="/" />
 
                             <TextView
                                 android:id="@+id/tv_temp_max_today"
                                 style="@style/TextBox"
-                                android:layout_width="60dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 tools:text="-88°C" />
 
@@ -206,7 +206,7 @@
 
                         <TextView
                             android:id="@+id/tv_mood_tomorrow"
-                            style="@style/TextBox"
+                            style="@style/TextBoxS"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -228,12 +228,12 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_marginEnd="@dimen/material_half"
-                                tools:src="@color/primary_dark" />
+                                android:src="@color/primary_dark" />
 
                             <TextView
                                 android:id="@+id/tv_temp_min_tomorrow"
                                 style="@style/TextBox"
-                                android:layout_width="30dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="4dp"
                                 tools:text="-88" />
@@ -243,12 +243,12 @@
                                 android:layout_width="10dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="6dp"
-                                tools:text="/" />
+                                android:text="/" />
 
                             <TextView
                                 android:id="@+id/tv_temp_max_tomorrow"
                                 style="@style/TextBox"
-                                android:layout_width="60dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 tools:text="-88°C" />
 
@@ -270,7 +270,7 @@
 
                         <TextView
                             android:id="@+id/tv_mood_aft_tomorrow"
-                            style="@style/TextBox"
+                            style="@style/TextBoxS"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -292,12 +292,12 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_marginEnd="@dimen/material_half"
-                                tools:src="@color/primary_dark" />
+                                android:src="@color/primary_dark" />
 
                             <TextView
                                 android:id="@+id/tv_temp_min_aft_tomorrow"
                                 style="@style/TextBox"
-                                android:layout_width="30dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="4dp"
                                 tools:text="-88" />
@@ -307,12 +307,12 @@
                                 android:layout_width="10dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="6dp"
-                                tools:text="/" />
+                                android:text="/" />
 
                             <TextView
                                 android:id="@+id/tv_temp_max_aft_tomorrow"
                                 style="@style/TextBox"
-                                android:layout_width="60dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 tools:text="-88°C" />
 
@@ -327,11 +327,12 @@
 
                     <TextView
                         android:id="@+id/tv_next_days"
-                        style="@style/TextBox"
+                        style="@style/TextBoxTitle"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/height_row_box"
-                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:layout_height="@dimen/height_row_box_xs"
+                        android:foreground="?android:attr/selectableItemBackground"
                         android:gravity="center"
+                        android:onClick="onClick"
                         android:text="@string/txt_next_days"
                         android:textSize="@dimen/txt_medium_xs" />
 
@@ -351,7 +352,7 @@
                     android:paddingBottom="@dimen/activity_horizontal_margin">
 
                     <TextView
-                        style="@style/TextBox"
+                        style="@style/TextBoxTitle"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/height_row_box_xs"
                         android:background="?attr/selectableItemBackgroundBorderless"
@@ -361,7 +362,8 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_weather_24_items"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:background="@color/primary" />
 
                 </LinearLayout>
 
@@ -375,15 +377,13 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/TextBox"
+                        style="@style/TextBoxTitle"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/height_row_box_xs"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:gravity="center_vertical"
                         android:paddingStart="@dimen/activity_horizontal_margin"
-                        android:text="@string/txt_details"
-                        android:textSize="@dimen/txt_medium_xs"
-                        android:textStyle="bold" />
+                        android:text="@string/txt_details" />
 
                     <View
                         android:layout_width="match_parent"

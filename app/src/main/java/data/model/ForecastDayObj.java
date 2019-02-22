@@ -3,6 +3,7 @@ package data.model;
 public class ForecastDayObj {
 
     private String date;
+    private long date_epoch;
     private DayWeatherObj day;
     private AstroObj astro;
     private HourWeatherObj[] hour;
@@ -14,6 +15,14 @@ public class ForecastDayObj {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public long getDate_epoch() {
+        return date_epoch;
+    }
+
+    public void setDate_epoch(long date_epoch) {
+        this.date_epoch = date_epoch;
     }
 
     public DayWeatherObj getDay() {

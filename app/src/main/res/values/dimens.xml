@@ -12,6 +12,7 @@
     <dimen name="material_half">8dp</dimen>
     <dimen name="material_24">24dp</dimen>
 
+    <dimen name="dim_2_rows_list_height_s">64dp</dimen>
     <dimen name="dim_2_rows_list_height">72dp</dimen>
 
     <!--static sizes for text-->

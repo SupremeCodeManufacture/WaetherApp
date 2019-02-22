@@ -3,6 +3,7 @@ package data.model;
 public class HourWeatherObj {
 
     private String time;
+    private long time_epoch;
     private float temp_c;
     private int is_day;
     private ConditionObj condition;
@@ -23,6 +24,14 @@ public class HourWeatherObj {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public long getTime_epoch() {
+        return time_epoch;
+    }
+
+    public void setTime_epoch(long time_epoch) {
+        this.time_epoch = time_epoch;
     }
 
     public float getTemp_c() {

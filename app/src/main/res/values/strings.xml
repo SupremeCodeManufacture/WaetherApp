@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">weather</string>
+    <string name="key_maps">AIzaSyA97abMWyRfzns2qT0RvXjZ87Jkfk6hjks</string>
 
     <string name="txt_warn">Warning</string>
     <string name="txt_no_loc_permissions">You did not accept permission for location detection. You can turn it on manually through Settings -> Applications -> This application -> Permissions</string>
@@ -25,5 +26,11 @@
     <string name="txt_vis">Visibility</string>
     <string name="txt_weather_24">Weather for 24 hours</string>
 
+    <string name="txt_today">Today</string>
+    <string name="txt_tomorrow">Tomorrow</string>
+
+    <string name="txt_my_loc">My locations</string>
+    <string name="txt_no_places">No locations yet</string>
+    <string name="txt_no_places_hint">But you can add new one really quick</string>
 
 </resources>

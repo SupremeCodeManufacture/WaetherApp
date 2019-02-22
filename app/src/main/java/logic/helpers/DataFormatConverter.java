@@ -1,16 +1,17 @@
 package logic.helpers;
 
-import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.text.format.DateFormat;
 
-import com.google.android.gms.common.util.Strings;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import data.model.ForecastObj;
 import data.model.HourWeatherObj;
@@ -71,11 +72,18 @@ public class DataFormatConverter {
         return "";
     }
 
-    public static HourWeatherObj[] getTodayHoursWeather(ForecastObj forecastObj) {
-        if (forecastObj != null && forecastObj.getForecastday()[0] != null && forecastObj.getForecastday()[0].getHour() != null)
-            return forecastObj.getForecastday()[0].getHour();
+    public static List<HourWeatherObj> getTodayHoursWeather(ForecastObj forecastObj) {
+        long curTimeMilis = System.currentTimeMillis();
+        HourWeatherObj[] todayHours = forecastObj.getForecastday()[0].getHour();
+        List<HourWeatherObj> list = new ArrayList<>();
 
-        return null;
+        for (HourWeatherObj hourWeatherObj : todayHours) {
+            if (curTimeMilis < ((hourWeatherObj.getTime_epoch()*1000) + 3600000)) {
+                list.add(hourWeatherObj);
+            }
+        }
+
+        return list;
     }
 
 }

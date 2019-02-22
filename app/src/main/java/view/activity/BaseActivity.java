@@ -1,8 +1,13 @@
 package view.activity;
 
+import android.app.Activity;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.material.snackbar.Snackbar;
 
 
@@ -19,6 +24,8 @@ import logic.listeners.OnDualSelectionListener;
 import view.custom.CustomDialogs;
 
 public abstract class BaseActivity extends AppCompatActivity {
+
+    protected final int PLACE_PICKER_REQUEST = 11;
 
 
     protected boolean isActivityValid() {
@@ -90,4 +97,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+
+    protected void onStartPiker(Activity activityRef, CoordinatorLayout coordinatorLayout) {
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            startActivityForResult(builder.build(activityRef), PLACE_PICKER_REQUEST);
+
+        } catch (GooglePlayServicesRepairableException e) {
+            showSnack(coordinatorLayout, App.getAppCtx().getResources().getString(R.string.txt_oops), true);
+            e.printStackTrace();
+
+        } catch (GooglePlayServicesNotAvailableException e) {
+            showSnack(coordinatorLayout, App.getAppCtx().getResources().getString(R.string.txt_oops), true);
+            e.printStackTrace();
+        }
+
+    }
 }
