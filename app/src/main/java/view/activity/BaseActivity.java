@@ -1,6 +1,7 @@
 package view.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
@@ -19,7 +20,9 @@ import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import data.App;
+import logic.helpers.LangUtils;
 import logic.helpers.LocationUtils;
+import logic.helpers.MyContextWrapper;
 import logic.listeners.OnDualSelectionListener;
 import view.custom.CustomDialogs;
 
@@ -27,6 +30,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected final int PLACE_PICKER_REQUEST = 11;
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, LangUtils.getselectedLanguage()));
+    }
 
     protected boolean isActivityValid() {
         return !isDestroyed() && !isFinishing();

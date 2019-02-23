@@ -6,6 +6,7 @@ import com.supreme.manufacture.weather.R;
 import data.App;
 import data.model.DataRs;
 import logic.async_await.OnAsyncDoneRsObjListener;
+import logic.helpers.LangUtils;
 import logic.helpers.MyLogs;
 import logic.listeners.OnFetchDataErrListener;
 import retrofit2.Call;
@@ -21,7 +22,7 @@ public class RequestManager {
 
         if (NetworkState.isNetworkAvailable()) {
             String key = App.getAppCtx().getResources().getString(R.string.api_key);
-            String lang = "en";//todo get user selected lang
+            String lang = LangUtils.getselectedLanguage();
             String days = "3";
 
             Call<DataRs> call = RestClient.get().getData(key, q, lang, days);

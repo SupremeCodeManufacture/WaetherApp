@@ -17,22 +17,25 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name="view.activity.MainActivity"
-            android:screenOrientation="portrait">
+            android:name="view.activity.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <activity android:name="view.activity.PlacesActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name="view.activity.PlacesActivity" />
+        <activity android:name="view.activity.MainActivity"
+            android:screenOrientation="portrait"/>
 
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/key_maps" />
-
 
     </application>
 

@@ -7,6 +7,9 @@ public class App extends Application {
 
     private static Context mContext;
     public static int APP_BUILDS;
+    public static String SELECTED_LANGUAGE;
+    public static String STORE_PLACES;
+
 
     @Override
     public void onCreate() {
@@ -27,5 +30,24 @@ public class App extends Application {
     public static void setAppBuilds(int appBuilds) {
         APP_BUILDS = appBuilds;
         SharedPrefs.setSharedPreferencesInt(SharedPrefs.KEY_SP_APP_BUILDS, appBuilds);
+    }
+
+
+    public static String getSelectedLanguage() {
+        return SELECTED_LANGUAGE != null ? SELECTED_LANGUAGE : SharedPrefs.getSharedPreferencesString(GenericConstants.KEY_SP_SELECTED_LANGUAGE, null);
+    }
+
+    public static void setSelectedLanguage(String selectedLanguage) {
+        SELECTED_LANGUAGE = selectedLanguage;
+        SharedPrefs.setSharedPreferencesString(GenericConstants.KEY_SP_SELECTED_LANGUAGE, selectedLanguage);
+    }
+
+    public static String getStorePlaces() {
+        return STORE_PLACES != null ? STORE_PLACES : SharedPrefs.getSharedPreferencesString(GenericConstants.KEY_SP_SAVED_PLACES, null);
+    }
+
+    public static void setStorePlaces(String storePlaces) {
+        STORE_PLACES = storePlaces;
+        SharedPrefs.setSharedPreferencesString(GenericConstants.KEY_SP_SAVED_PLACES, storePlaces);
     }
 }

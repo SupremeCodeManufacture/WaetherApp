@@ -26,7 +26,6 @@ import data.view_model.MainActivityViewModel;
 import logic.adapters.HoursWeatherAdapter;
 import logic.async_await.OnAsyncDoneRsObjListener;
 import logic.helpers.DataFormatConverter;
-import logic.helpers.MyLogs;
 import logic.listeners.OnFetchDataErrListener;
 import logic.network.RequestManager;
 import view.custom.WrapLayoutManager;

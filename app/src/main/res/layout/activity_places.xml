@@ -33,7 +33,7 @@
                         android:layout_marginEnd="@dimen/activity_horizontal_margin"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:onClick="onClick"
-                        android:src="@mipmap/ic_arrow_back" />
+                        android:src="@mipmap/ic_action_arrow_back" />
 
                     <TextView
                         android:id="@+id/tv_toolbar_place"

@@ -2,13 +2,23 @@ package data.model;
 
 public class LocationObj {
 
+    private String id;
     private String name;
     private String region;
     private String country;
     private String localtime;
     private double lon;
     private double lat;
+    private boolean selected;
 
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -56,5 +66,13 @@ public class LocationObj {
 
     public void setLat(double lat) {
         this.lat = lat;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

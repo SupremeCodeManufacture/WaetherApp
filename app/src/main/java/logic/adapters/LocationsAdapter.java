@@ -28,6 +28,21 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.View
         this.mOnLocationSelectedListener = listener;
     }
 
+    public void onDeleteLoc(int pos) {
+        mData.remove(pos);
+        this.notifyItemRemoved(pos);
+
+        if (getItemCount() == 0)
+            mOnLocationSelectedListener.onEmptyLocations();
+    }
+
+
+    public List<LocationObj> getAllItems() {
+        return mData;
+    }
+
+
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -79,7 +94,15 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.View
         public void onClick(View v) {
             final int clickedPosition = getAdapterPosition();
             if (clickedPosition != RecyclerView.NO_POSITION && mOnLocationSelectedListener != null) {
-                mOnLocationSelectedListener.onLocationSelectedListener(mData.get(clickedPosition));
+                switch (v.getId()) {
+                    case R.id.whole_loc_itm:
+                        mOnLocationSelectedListener.onLocationSelectedListener(mData.get(clickedPosition));
+                        break;
+
+                    case R.id.btn_delete:
+                        mOnLocationSelectedListener.onLocDeletedListener(mData.get(clickedPosition), clickedPosition);
+                        break;
+                }
             }
         }
     }

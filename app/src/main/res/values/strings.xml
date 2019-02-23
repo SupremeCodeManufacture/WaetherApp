@@ -33,4 +33,6 @@
     <string name="txt_no_places">No locations yet</string>
     <string name="txt_no_places_hint">But you can add new one really quick</string>
 
+    <string name="txt_del_loc">Are you sure to delete this location?</string>
+
 </resources>

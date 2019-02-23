@@ -7,5 +7,7 @@ public class GenericConstants {
 
 
     public static final String KEY_SHARED_PREFS = "my_shared_prefs";
+    public static final String KEY_SP_SELECTED_LANGUAGE = "KEY_SP_SELECTED_LANGUAGE";
+    public static final String KEY_SP_SAVED_PLACES = "KEY_SP_SAVED_PLACES";
 
 }
