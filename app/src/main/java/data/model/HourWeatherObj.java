@@ -17,6 +17,8 @@ public class HourWeatherObj {
     private float feelslike_c;
     private float vis_km;
 
+    private int heightValDp;
+
 
     public String getTime() {
         return time;
@@ -128,5 +130,13 @@ public class HourWeatherObj {
 
     public void setVis_km(float vis_km) {
         this.vis_km = vis_km;
+    }
+
+    public int getHeightValDp() {
+        return heightValDp;
+    }
+
+    public void setHeightValDp(int heightValDp) {
+        this.heightValDp = heightValDp;
     }
 }

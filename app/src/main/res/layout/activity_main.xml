@@ -362,8 +362,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_weather_24_items"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/primary" />
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 

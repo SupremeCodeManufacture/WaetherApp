@@ -1,12 +1,11 @@
 package logic.network;
 
-import com.supreme.manufacture.weather.R;
 import com.google.gson.Gson;
+import com.supreme.manufacture.weather.R;
 
 import data.App;
 import data.model.DataRs;
 import data.model.ErrObj;
-import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 
@@ -22,7 +21,8 @@ public class ErrorHandler {
     public static String getErrMsgFromRs(Response<DataRs> response) {
         if (response != null && response.errorBody() != null) {
             try {
-                ErrObj errObj = new Gson().fromJson(response.errorBody().string(), ErrObj.class);
+                DataRs dataRs = new Gson().fromJson(response.errorBody().string(), DataRs.class);
+                ErrObj errObj = dataRs != null ? dataRs.getError() : null;
                 if (errObj != null && errObj.getMessage() != null) return errObj.getMessage();
 
             } catch (Exception e) {

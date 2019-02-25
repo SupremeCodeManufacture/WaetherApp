@@ -1,13 +1,16 @@
 package view.activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.supreme.manufacture.weather.R;
 import com.supreme.manufacture.weather.databinding.ActivityPlacesBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -16,13 +19,21 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import data.App;
+import data.DataBase;
+import data.GenericConstants;
+import data.model.DataRs;
 import data.model.LocationObj;
 import data.view_model.PlacesActivityViewModel;
 import logic.adapters.LocationsAdapter;
+import logic.async_await.AsyncTaskWorker;
+import logic.async_await.CallableObj;
+import logic.async_await.OnAsyncDoneNoRsListener;
+import logic.async_await.OnAsyncDoneRsObjListener;
 import logic.helpers.DataFormatConverter;
 import logic.helpers.MyLogs;
 import logic.listeners.OnDualSelectionListener;
 import logic.listeners.OnLocationSelectedListener;
+import logic.network.RequestManager;
 import view.custom.CustomDialogs;
 import view.custom.WrapLayoutManager;
 
@@ -42,6 +53,26 @@ public class PlacesActivity extends BaseActivity implements
         mActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_places);
 
         bindViewModel();
+
+        onProgressShow(mActivityBinding.progressBar);
+        asyncLoadLocations();
+    }
+
+
+    private void loadItems(List<LocationObj> locationObjs) {
+        if (locationObjs != null && locationObjs.size() > 0) {
+            mActivityBinding.noContent.rlNoContent.setVisibility(View.GONE);
+            mActivityBinding.rvItems.setVisibility(View.VISIBLE);
+
+            mLocationsAdapter = new LocationsAdapter(PlacesActivity.this, locationObjs, PlacesActivity.this);
+            mActivityBinding.rvItems.setAdapter(mLocationsAdapter);
+            mActivityBinding.rvItems.setLayoutManager(new WrapLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+            mActivityBinding.rvItems.setHasFixedSize(true);
+
+        } else {
+            mActivityBinding.noContent.rlNoContent.setVisibility(View.VISIBLE);
+            mActivityBinding.rvItems.setVisibility(View.GONE);
+        }
     }
 
     private void bindViewModel() {
@@ -54,21 +85,120 @@ public class PlacesActivity extends BaseActivity implements
         });
     }
 
+    private void asyncLoadLocations() {
+        new AsyncTaskWorker(
+                new CallableObj<List<LocationObj>>() {
+                    public List<LocationObj> call() {
+                        List<LocationObj> list = DataBase.getInstance(App.getAppCtx()).selectAllLocations();
 
-    private void loadItems(List<LocationObj> locationObjs) {
-        if (locationObjs != null) {
-            mActivityBinding.noContent.rlNoContent.setVisibility(View.GONE);
-            mActivityBinding.rvItems.setVisibility(View.VISIBLE);
+                        for (LocationObj locationObj : list) {
+                            DataRs dataRs = RequestManager.syncGetCurWeather(locationObj.getLat() + "," + locationObj.getLon());
+                            if (dataRs != null) {
+                                locationObj.setCurrentWeatherObj(dataRs.getCurrent());
+                                locationObj.setForecastObj(dataRs.getForecast());
+                            }
+                        }
 
-            mLocationsAdapter = new LocationsAdapter(locationObjs, PlacesActivity.this);
-            mActivityBinding.rvItems.setAdapter(mLocationsAdapter);
-            mActivityBinding.rvItems.setLayoutManager(new WrapLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
-            mActivityBinding.rvItems.setHasFixedSize(true);
+                        return list;
+                    }
+                },
+                new OnAsyncDoneRsObjListener() {
+                    @Override
+                    public <T> void onDone(T t) {
+                        onProgressDismiss(mActivityBinding.progressBar);
 
-        } else {
-            mActivityBinding.noContent.rlNoContent.setVisibility(View.VISIBLE);
-            mActivityBinding.rvItems.setVisibility(View.GONE);
-        }
+                        if (t != null) {
+                            placesActivityViewModel.setMyLocations((List<LocationObj>) t);
+                        }
+                    }
+                }
+        ).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void asyncAddLocation(final Place place) {
+        onProgressShow(mActivityBinding.progressBar);
+
+        new AsyncTaskWorker(
+                new CallableObj<LocationObj>() {
+                    public LocationObj call() {
+                        LocationObj locationObj = DataFormatConverter.hetLocationFromPalce(place);
+
+                        if (locationObj != null) {
+                            DataBase dataBase = DataBase.getInstance(App.getAppCtx());
+                            dataBase.insertUpdateLocation(locationObj);
+
+                            DataRs dataRs = RequestManager.syncGetCurWeather(locationObj.getLat() + "," + locationObj.getLon());
+                            if (dataRs != null) {
+                                locationObj.setCurrentWeatherObj(dataRs.getCurrent());
+                                locationObj.setForecastObj(dataRs.getForecast());
+                            }
+
+                            return locationObj;
+                        }
+
+                        return null;
+                    }
+                },
+                new OnAsyncDoneRsObjListener() {
+                    @Override
+                    public <T> void onDone(T t) {
+                        if (t != null) {
+                            onProgressDismiss(mActivityBinding.progressBar);
+
+                            if (mLocationsAdapter == null) {
+                                List<LocationObj> list = new ArrayList<>();
+                                list.add((LocationObj) t);
+                                placesActivityViewModel.setMyLocations(list);
+
+                            } else {
+                                mLocationsAdapter.onAddItem((LocationObj) t);
+                                mActivityBinding.rvItems.smoothScrollToPosition(0);
+
+                                mActivityBinding.noContent.rlNoContent.setVisibility(View.GONE);
+                                mActivityBinding.rvItems.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+                }
+        ).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void asyncDellLocation(final String locId, final int deletedPos) {
+        new AsyncTaskWorker(
+                new CallableObj<Void>() {
+                    public Void call() {
+                        DataBase.getInstance(App.getAppCtx()).deleteLocation(locId);
+                        return null;
+                    }
+                },
+                new OnAsyncDoneNoRsListener() {
+                    @Override
+                    public void onDone() {
+                        mLocationsAdapter.onDeleteLoc(deletedPos);
+                    }
+                }
+        ).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void asyncUpdateSelection(final LocationObj locationObj) {
+        new AsyncTaskWorker(
+                new CallableObj<Void>() {
+                    public Void call() {
+                        DataBase.getInstance(App.getAppCtx()).updateSelectedLocation(locationObj.getId());
+                        return null;
+                    }
+                },
+                new OnAsyncDoneNoRsListener() {
+                    @Override
+                    public void onDone() {
+                        Intent intent = new Intent();
+                        intent.putExtra(GenericConstants.KEY_EXTRA_LOC_COORDONATES, locationObj.getLat() + "," + locationObj.getLon());
+                        intent.putExtra(GenericConstants.KEY_EXTRA_LOC_NAME, locationObj.getName());
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                }
+        ).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
 
@@ -92,8 +222,7 @@ public class PlacesActivity extends BaseActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK && requestCode == PLACE_PICKER_REQUEST) {
-            LocationObj locationObj = DataFormatConverter.hetLocationFromPalce(PlacePicker.getPlace(this, data));
-            placesActivityViewModel.addLocation(locationObj);
+            asyncAddLocation(PlacePicker.getPlace(this, data));
         }
     }
 
@@ -101,12 +230,11 @@ public class PlacesActivity extends BaseActivity implements
     @Override
     public void onLocationSelectedListener(LocationObj locationObj) {
         MyLogs.LOG("PlacesActivity", "onLocationSelectedListener", "locationObj====> " + locationObj.getName());
-
-        // TODO: 23/02/2019
+        asyncUpdateSelection(locationObj);
     }
 
     @Override
-    public void onLocDeletedListener(LocationObj locationObj, final int pos) {
+    public void onLocDeletedListener(final LocationObj locationObj, final int pos) {
         CustomDialogs.createSimpleDialog(
                 PlacesActivity.this,
                 App.getAppCtx().getResources().getString(R.string.txt_warn),
@@ -117,8 +245,7 @@ public class PlacesActivity extends BaseActivity implements
                 new OnDualSelectionListener() {
                     @Override
                     public void onPositiveButtonClick() {
-                        mLocationsAdapter.onDeleteLoc(pos);
-                        DataFormatConverter.updateAllLocations(mLocationsAdapter.getAllItems());
+                        asyncDellLocation(locationObj.getId(), pos);
                     }
 
                     @Override

@@ -1,32 +1,33 @@
 package logic.helpers;
 
+import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.text.format.DateFormat;
+import android.util.DisplayMetrics;
+import android.widget.RelativeLayout;
 
 import com.google.android.gms.common.util.Strings;
 import com.google.android.gms.location.places.Place;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import data.App;
+import data.model.DayWeatherObj;
 import data.model.ForecastObj;
 import data.model.HourWeatherObj;
 import data.model.LocationObj;
-import logic.async_await.AsyncTaskWorker;
-import logic.async_await.CallableObj;
-import logic.async_await.OnAsyncDoneNoRsListener;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
@@ -102,6 +103,51 @@ public class DataFormatConverter {
         return "";
     }
 
+    //from '2019-02-21' to '21 Feb'
+    public static String getPrettyDay(String inDate) {
+        SimpleDateFormat intFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        if (inDate != null)
+            try {
+                Date date = intFormat.parse(inDate);
+                return DateFormat.format("MMM dd", date).toString();
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        return "";
+    }
+
+    //from '2019-02-21' to 'Mon'
+    public static String getPrettyWeekDay(String inDate) {
+        SimpleDateFormat intFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        if (inDate != null)
+            try {
+                Date date = intFormat.parse(inDate);
+                return DateFormat.format("EEE", date).toString();
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        return "";
+    }
+
+    public static String getTodatDate() {
+        try {
+            Date date = Calendar.getInstance().getTime();
+            return DateFormat.format("yyyy-MM-dd", date).toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+
     public static List<HourWeatherObj> getTodayHoursWeather(ForecastObj forecastObj) {
         long curTimeMilis = System.currentTimeMillis();
         HourWeatherObj[] todayHours = forecastObj.getForecastday()[0].getHour();
@@ -109,6 +155,8 @@ public class DataFormatConverter {
 
         for (HourWeatherObj hourWeatherObj : todayHours) {
             if (curTimeMilis < ((hourWeatherObj.getTime_epoch() * 1000) + 3600000)) {
+                int heightTempDpi = DataFormatConverter.getMinMaxTempDif(forecastObj, hourWeatherObj.getTemp_c(), 90);
+                hourWeatherObj.setHeightValDp(heightTempDpi);
                 list.add(hourWeatherObj);
             }
         }
@@ -116,14 +164,38 @@ public class DataFormatConverter {
         return list;
     }
 
-    public static List<LocationObj> getMyStoredLocations() {
-        String myLocJson = App.getStorePlaces();
-        if (myLocJson != null) {
-            return new Gson().fromJson(myLocJson, new TypeToken<List<LocationObj>>() {
-            }.getType());
+    public static int getMinMaxTempDif(ForecastObj forecastObj, float curTemp, int heighDp) {
+        DayWeatherObj dayWeatherObj = forecastObj.getForecastday()[0].getDay();
+        float tempMin = dayWeatherObj.getMintemp_c();
+        float tempMax = dayWeatherObj.getMaxtemp_c();
+        MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "heighDp: " + heighDp + "  tempMin: " + tempMin + " tempMax: " + tempMax + " curTemp: " + curTemp);
+
+        float calcVal;
+        if (tempMin > 0 && tempMax > 0) {
+            calcVal = Math.abs(tempMin) * heighDp / Math.abs(tempMax);
+            MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "1 - calcVal: " + calcVal);
+
+        } else if (tempMin < 0 && tempMax < 0) {
+            calcVal = Math.abs(tempMax) * heighDp / Math.abs(tempMin);
+            MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "2 - calcVal: " + calcVal);
+
+        } else {
+            float diff = Math.abs(tempMin) + Math.abs(tempMax);
+            MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "diff: " + diff);
+
+            if (curTemp > 0) {
+                float finalCompareVal = Math.abs(tempMin) + curTemp;
+                calcVal = (finalCompareVal * heighDp) / diff;
+                MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "3 - finalCompareVal: " + finalCompareVal + " calcVal: " + calcVal);
+
+            } else {
+                float finalCompareVal = Math.abs(tempMin) - Math.abs(curTemp);
+                calcVal = (Math.abs(finalCompareVal) * heighDp) / diff;
+                MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "4 - finalCompareVal: " + finalCompareVal + " calcVal: " + calcVal);
+            }
         }
 
-        return null;
+        return (int) Math.ceil(Math.abs(calcVal));
     }
 
     public static LocationObj hetLocationFromPalce(Place place) {
@@ -144,6 +216,7 @@ public class DataFormatConverter {
             MyLogs.LOG("DataFormatConverter", "hetLocationFromPalce", "locality: " + locality + " country: " + country);
 
             LocationObj locationObj = new LocationObj();
+            locationObj.setId(getMd5(locality + country));
             locationObj.setName(locality);
             locationObj.setCountry(country);
             locationObj.setLat(myLatitude);
@@ -155,27 +228,45 @@ public class DataFormatConverter {
         return null;
     }
 
-    //used after item is deleted
-    public static void updateAllLocations(final List<LocationObj> locations) {
-        new AsyncTaskWorker(
-                new CallableObj<Void>() {
-                    public Void call() {
-                        if (locations != null && locations.size() > 0) {
-                            MyLogs.LOG("DataFormatConverter", "updateAllLocations", "====> " + locations.size());
+    public static String getMd5(final String inputStr) {
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(inputStr.getBytes());
+            byte messageDigest[] = digest.digest();
 
-                            App.setStorePlaces(new Gson().toJson(locations));
-                        } else {
-                            MyLogs.LOG("DataFormatConverter", "updateAllLocations", "====> no data");
-                            App.setStorePlaces("");
-                        }
-                        return null;
-                    }
-                },
-                new OnAsyncDoneNoRsListener() {
-                    @Override
-                    public void onDone() {
-                    }
-                }
-        ).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            // Create Hex String
+            StringBuilder hexString = new StringBuilder();
+            for (byte aMessageDigest : messageDigest) {
+                String h = Integer.toHexString(0xFF & aMessageDigest);
+                while (h.length() < 2)
+                    h = "0" + h;
+                hexString.append(h);
+            }
+
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    public static RelativeLayout.LayoutParams getAudienceViewParams(int heightDpi) {
+        MyLogs.LOG("DataFormatConverter", "getAudienceViewParams", "heightDpi: " + heightDpi);
+
+        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+        float pxw = 20 * (metrics.densityDpi / 160f);
+        int w = Math.round(pxw);
+
+        float pxh = Math.round(heightDpi) * (metrics.densityDpi / 160f);
+        int h = Math.round(pxh);
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(w, h);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+        return params;
     }
 }

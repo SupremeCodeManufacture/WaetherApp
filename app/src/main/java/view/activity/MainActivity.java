@@ -1,6 +1,7 @@
 package view.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -12,11 +13,13 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import data.App;
+import data.GenericConstants;
 import data.model.CurrentWeatherObj;
 import data.model.DataRs;
 import data.model.ForecastDayObj;
@@ -37,6 +40,8 @@ public class MainActivity extends BaseActivity implements
 
     private ActivityMainBinding mActivityBinding;
     private MainActivityViewModel mViewModel;
+    private static final int NEW_LOC_SELECTION_CODE = 567;
+    private String mCoordQuery;
 
 
     @Override
@@ -46,9 +51,11 @@ public class MainActivity extends BaseActivity implements
 
         bindViewModel();
 
-        onProgressShow(mActivityBinding.progressBar);
-        RequestManager.execGetSalons("Chisinau", MainActivity.this, MainActivity.this);
+        // if there is a selected city use it - if no try to detect location - if permissions
+        // TODO: 24/02/2019
+        onLoadLocationWeather("", "60.0875092,30.2659864");
     }
+
 
     private void bindViewModel() {
         mViewModel = ViewModelProviders.of(MainActivity.this).get(MainActivityViewModel.class);
@@ -69,7 +76,9 @@ public class MainActivity extends BaseActivity implements
         mActivityBinding.tvToolbarPlace.setText(dataRs.getLocation().getName());
 
         loadCurWeather(dataRs.getCurrent());
+
         loadTodaysHoursWeather(dataRs.getForecast());
+
         loadDaysWeather(dataRs.getForecast());
     }
 
@@ -86,12 +95,12 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void loadTodaysHoursWeather(ForecastObj forecastObj) {
-        List<HourWeatherObj> hourWeatherObjs = DataFormatConverter.getTodayHoursWeather(forecastObj);
+        List<HourWeatherObj> list = DataFormatConverter.getTodayHoursWeather(forecastObj); // TODO: 24/02/2019  async
 
-        if (hourWeatherObjs != null && hourWeatherObjs.size() > 0) {
+        if (list != null && list.size() > 0) {
             mActivityBinding.zoneTodayHours.setVisibility(View.VISIBLE);
 
-            mActivityBinding.rvWeather24Items.setAdapter(new HoursWeatherAdapter(hourWeatherObjs));
+            mActivityBinding.rvWeather24Items.setAdapter(new HoursWeatherAdapter(list));
             mActivityBinding.rvWeather24Items.setLayoutManager(new WrapLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
             mActivityBinding.rvWeather24Items.setHasFixedSize(true);
 
@@ -136,27 +145,45 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
+    private void onLoadLocationWeather(String locName, String locQuery) {
+        mActivityBinding.tvToolbarPlace.setText(locName);
+        mCoordQuery = locQuery;
+
+        onProgressShow(mActivityBinding.progressBar);
+        RequestManager.asyncGetForecastWeather(locQuery, "3", MainActivity.this, MainActivity.this);
+    }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_details:
-                // TODO: 21/02/2019
-                RequestManager.execGetSalons("Chisinau", MainActivity.this, MainActivity.this);
+                // TODO: 21/02/2019 to set on internal brawser
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.apixu.com/weather/"));
+                startActivity(browserIntent);
                 break;
 
             case R.id.tv_next_days:
-                // TODO: 21/02/2019
+                Intent intent = new Intent(MainActivity.this, WeatherDetailsActivity.class);
+                intent.putExtra(GenericConstants.KEY_EXTRA_LOC_COORDONATES, mCoordQuery);
+                startActivity(intent);
                 break;
 
             case R.id.btn_add:
-                startActivity(new Intent(MainActivity.this, PlacesActivity.class));
+                startActivityForResult(new Intent(MainActivity.this, PlacesActivity.class), NEW_LOC_SELECTION_CODE);
+                break;
+
+            case R.id.btn_more:
+                // TODO: 25/02/2019  
+                showSnack(mActivityBinding.mainCoord, "Settings comming soon", true);
                 break;
         }
     }
 
+
     @Override
     public <T> void onDone(T obj) {
+        onProgressDismiss(mActivityBinding.progressBar);
         mViewModel.setCurData((DataRs) obj);
     }
 
@@ -164,5 +191,16 @@ public class MainActivity extends BaseActivity implements
     public void onErrNptify(String errStr) {
         onProgressDismiss(mActivityBinding.progressBar);
         showSnack(mActivityBinding.mainCoord, errStr, true);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK && requestCode == NEW_LOC_SELECTION_CODE && data != null) {
+            String name = data.getStringExtra(GenericConstants.KEY_EXTRA_LOC_NAME);
+            String coord = data.getStringExtra(GenericConstants.KEY_EXTRA_LOC_COORDONATES);
+
+            if (name != null && coord != null)
+                onLoadLocationWeather(name, coord);
+        }
     }
 }

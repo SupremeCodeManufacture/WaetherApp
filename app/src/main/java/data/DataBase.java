@@ -29,7 +29,7 @@ public class DataBase extends SQLiteOpenHelper {
     private static final String KEY_LNG = "lng";
     private static final String KEY_LAT = "lat";
     private static final String KEY_SELECTED = "selected";
-    private static final String KEY_SYS_TIME = "selected";
+    private static final String KEY_SYS_TIME = "log_time";
 
 
     private static final String CREATE_TABLE_LOCATIONS = "CREATE TABLE " + TABLE_LOCATIONS + "(" +
@@ -150,6 +150,66 @@ public class DataBase extends SQLiteOpenHelper {
         return list;
     }
 
+    public void updateSelectedLocation(String selectedId) {
+        MyLogs.LOG("DataBase", "updateSelectedLocation", "selectedId --> " + selectedId);
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.beginTransaction();
+
+        try {
+            Cursor cursor = db.query(TABLE_LOCATIONS,
+                    new String[]{KEY_ID, KEY_NAME, KEY_COUNTRY, KEY_LNG, KEY_LAT, KEY_SELECTED},
+                    null, null, null, null, KEY_SYS_TIME + " DESC ", null);
+
+            if (cursor != null) {
+                for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                    String curId = cursor.getString(0);
+
+                    //locationObj
+                    ContentValues values = new ContentValues();
+                    int status = selectedId.equals(curId) ? 1 : 0;
+                    values.put(KEY_SELECTED, status);
+
+                    MyLogs.LOG("DataBase", "updateSelectedLocation", "curId --> " + curId + " status: " + status);
+
+                    db.update(
+                            TABLE_LOCATIONS,
+                            values,
+                            KEY_ID + " =?",
+                            new String[]{curId});
+                }
+
+                cursor.close();
+            }
+            db.setTransactionSuccessful();
+
+        } catch (Exception ex) {
+            MyLogs.LOG("DataBase", "updateSelectedLocation", "ERROR --> ex: " + ex.getMessage());
+            ex.printStackTrace();
+
+        } finally {
+            safeEndTransaction(db);
+        }
+    }
+
+
+    public void deleteLocation(String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+
+        try {
+            int deletedItems = db.delete(TABLE_LOCATIONS, KEY_ID + "=?", new String[]{id});
+            MyLogs.LOG("DataBase", "deleteUserAllAccess", "deletedItems: " + deletedItems);
+
+            db.setTransactionSuccessful();
+
+        } catch (Throwable ex) {
+            MyLogs.LOG("DataBase", "deleteUserAllAccess", "ERROR --> ex: " + ex.getMessage());
+            ex.printStackTrace();
+
+        } finally {
+            safeEndTransaction(db);
+        }
+    }
 
     //-------------------------------- GENERIC HELPER stuff---------------------------------------//
     private void safeEndTransaction(SQLiteDatabase db) {

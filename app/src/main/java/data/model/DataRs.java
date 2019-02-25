@@ -1,10 +1,11 @@
 package data.model;
 
-public class DataRs extends  ErrObj {
+public class DataRs {
 
     private LocationObj location;
     private CurrentWeatherObj current;
     private ForecastObj forecast;
+    private ErrObj error;
 
 
     public LocationObj getLocation() {
@@ -29,5 +30,13 @@ public class DataRs extends  ErrObj {
 
     public void setForecast(ForecastObj forecast) {
         this.forecast = forecast;
+    }
+
+    public ErrObj getError() {
+        return error;
+    }
+
+    public void setError(ErrObj error) {
+        this.error = error;
     }
 }

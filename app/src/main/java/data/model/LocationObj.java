@@ -9,6 +9,8 @@ public class LocationObj {
     private String localtime;
     private double lon;
     private double lat;
+    private CurrentWeatherObj currentWeatherObj;
+    private ForecastObj forecastObj;
     private boolean selected;
 
 
@@ -74,5 +76,21 @@ public class LocationObj {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public CurrentWeatherObj getCurrentWeatherObj() {
+        return currentWeatherObj;
+    }
+
+    public void setCurrentWeatherObj(CurrentWeatherObj currentWeatherObj) {
+        this.currentWeatherObj = currentWeatherObj;
+    }
+
+    public ForecastObj getForecastObj() {
+        return forecastObj;
+    }
+
+    public void setForecastObj(ForecastObj forecastObj) {
+        this.forecastObj = forecastObj;
     }
 }

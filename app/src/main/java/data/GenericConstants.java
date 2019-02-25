@@ -8,6 +8,6 @@ public class GenericConstants {
 
     public static final String KEY_SHARED_PREFS = "my_shared_prefs";
     public static final String KEY_SP_SELECTED_LANGUAGE = "KEY_SP_SELECTED_LANGUAGE";
-    public static final String KEY_SP_SAVED_PLACES = "KEY_SP_SAVED_PLACES";
-
+    public static final String KEY_EXTRA_LOC_COORDONATES = "KEY_EXTRA_LOC_COORDONATES";
+    public static final String KEY_EXTRA_LOC_NAME = "KEY_EXTRA_LOC_NAME";
 }

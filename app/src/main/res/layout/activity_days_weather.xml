@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/places_coord"
+        android:id="@+id/det_coord"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="view.activity.PlacesActivity">
@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@+id/btn_back"
-                        android:text="@string/txt_my_loc" />
+                        android:text="@string/txt_next_days" />
 
                 </RelativeLayout>
 
@@ -63,20 +63,9 @@
 
             <include
                 android:id="@+id/no_content"
-                layout="@layout/view_no_locations" />
+                layout="@layout/view_no_weather" />
 
         </RelativeLayout>
-
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:onClick="onClick"
-            android:src="@mipmap/ic_action_add" />
-
 
         <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/progress_bar"

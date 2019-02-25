@@ -15,7 +15,7 @@
     <string name="txt_enable">Open settings</string>
 
     <string name="txt_details">Details</string>
-    <string name="txt_next_days">Weather for next 5 days</string>
+    <string name="txt_next_days">Weather for next 10 days</string>
     <string name="txt_detailed">Detailed</string>
 
     <string name="txt_wind">Wind</string>
@@ -34,5 +34,6 @@
     <string name="txt_no_places_hint">But you can add new one really quick</string>
 
     <string name="txt_del_loc">Are you sure to delete this location?</string>
+    <string name="txt_no_data">No data available</string>
 
 </resources>

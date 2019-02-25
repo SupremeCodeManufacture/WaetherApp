@@ -16,7 +16,7 @@ import logic.helpers.DataFormatConverter;
 
 public class HoursWeatherAdapter extends RecyclerView.Adapter<HoursWeatherAdapter.ViewHolder> {
 
-    private  List<HourWeatherObj>  mData;
+    private List<HourWeatherObj> mData;
 
     public HoursWeatherAdapter(List<HourWeatherObj> list) {
         this.mData = list;
@@ -36,6 +36,8 @@ public class HoursWeatherAdapter extends RecyclerView.Adapter<HoursWeatherAdapte
             viewHolder.tvTemp.setText(String.valueOf(hourWeatherObj.getTemp_c()) + " °C");
             viewHolder.tvWind.setText(String.valueOf(hourWeatherObj.getWind_kph()) + " km/h");
             viewHolder.tvHour.setText(DataFormatConverter.getPrettyHour(hourWeatherObj.getTime()));
+
+            viewHolder.viewTemp.setLayoutParams(DataFormatConverter.getAudienceViewParams(hourWeatherObj.getHeightValDp()));
         }
     }
 

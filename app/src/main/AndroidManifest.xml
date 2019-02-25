@@ -26,11 +26,17 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="view.activity.PlacesActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name="view.activity.PlacesActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name="view.activity.MainActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name="view.activity.MainActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="view.activity.WeatherDetailsActivity"
+            android:screenOrientation="portrait" />
 
 
         <meta-data

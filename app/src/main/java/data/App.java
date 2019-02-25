@@ -8,7 +8,6 @@ public class App extends Application {
     private static Context mContext;
     public static int APP_BUILDS;
     public static String SELECTED_LANGUAGE;
-    public static String STORE_PLACES;
 
 
     @Override
@@ -40,14 +39,5 @@ public class App extends Application {
     public static void setSelectedLanguage(String selectedLanguage) {
         SELECTED_LANGUAGE = selectedLanguage;
         SharedPrefs.setSharedPreferencesString(GenericConstants.KEY_SP_SELECTED_LANGUAGE, selectedLanguage);
-    }
-
-    public static String getStorePlaces() {
-        return STORE_PLACES != null ? STORE_PLACES : SharedPrefs.getSharedPreferencesString(GenericConstants.KEY_SP_SAVED_PLACES, null);
-    }
-
-    public static void setStorePlaces(String storePlaces) {
-        STORE_PLACES = storePlaces;
-        SharedPrefs.setSharedPreferencesString(GenericConstants.KEY_SP_SAVED_PLACES, storePlaces);
     }
 }
