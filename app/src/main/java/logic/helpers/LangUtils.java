@@ -28,5 +28,4 @@ public class LangUtils {
         String userSelectedLang = App.getSelectedLanguage();
         return userSelectedLang != null ? userSelectedLang : Locale.getDefault().getLanguage();
     }
-
 }

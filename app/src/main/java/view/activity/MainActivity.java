@@ -1,7 +1,6 @@
 package view.activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -20,6 +19,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import data.App;
 import data.GenericConstants;
+import data.SettingsPreferences;
 import data.model.CurrentWeatherObj;
 import data.model.DataRs;
 import data.model.ForecastDayObj;
@@ -45,15 +45,20 @@ public class MainActivity extends BaseActivity implements
 
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        // if there is a selected city use it - if no try to detect location - if permissions
+        // TODO: 24/02/2019
+        onLoadLocationWeather("", "60.0875092,30.2659864");
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         bindViewModel();
-
-        // if there is a selected city use it - if no try to detect location - if permissions
-        // TODO: 24/02/2019
-        onLoadLocationWeather("", "60.0875092,30.2659864");
     }
 
 
@@ -83,15 +88,34 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void loadCurWeather(CurrentWeatherObj currentWeatherObj) {
-        mActivityBinding.tvTemp.setText(String.valueOf(currentWeatherObj.getTemp_c()));
         mActivityBinding.tvMoodType.setText(currentWeatherObj.getCondition().getText());
-
-        mActivityBinding.tvWind.setText(String.valueOf(currentWeatherObj.getWind_kph()) + " km/h");
-        mActivityBinding.tvFeels.setText(String.valueOf(currentWeatherObj.getFeelslike_c()) + " °C");
-        mActivityBinding.tvPressure.setText(String.valueOf(currentWeatherObj.getPressure_mb()) + " Mbar");
         mActivityBinding.tvUvIndex.setText(String.valueOf(currentWeatherObj.getUv()));
-        mActivityBinding.tvHum.setText(String.valueOf(currentWeatherObj.getHumidity()) + " %");
-        mActivityBinding.tvVisibility.setText(String.valueOf(currentWeatherObj.getVis_km()) + " km");
+        mActivityBinding.tvHum.setText(String.valueOf(currentWeatherObj.getHumidity()) + "%");
+
+        //temp
+        String degreeType = SettingsPreferences.getSharedPrefsString(App.getAppCtx().getResources().getString(R.string.stg_temp), "°C");
+
+        String tempCur = degreeType.equals(App.getAppCtx().getResources().getStringArray(R.array.temp_messures_values)[0]) ? String.valueOf(currentWeatherObj.getTemp_c()) : String.valueOf(currentWeatherObj.getTemp_f());
+        mActivityBinding.tvTemp.setText(tempCur);
+        mActivityBinding.tvDegreeType.setText(degreeType);
+
+        String tempFeels = degreeType.equals(App.getAppCtx().getResources().getStringArray(R.array.temp_messures_values)[0]) ? String.valueOf(currentWeatherObj.getFeelslike_c()) : String.valueOf(currentWeatherObj.getFeelslike_f());
+        mActivityBinding.tvFeels.setText(tempFeels + degreeType);
+
+        //wind
+        String speedType = SettingsPreferences.getSharedPrefsString(App.getAppCtx().getResources().getString(R.string.stg_wind_speed), "kph");
+        String speed = speedType.equals(App.getAppCtx().getResources().getStringArray(R.array.wind_messures_values)[0]) ? String.valueOf(currentWeatherObj.getWind_kph()) : String.valueOf(currentWeatherObj.getWind_mph());
+        mActivityBinding.tvWind.setText(speed + " " + speedType);
+
+        String visType = speedType.equals(App.getAppCtx().getResources().getStringArray(R.array.wind_messures_values)[0]) ? "km" : "miles";
+        String vis = speedType.equals(App.getAppCtx().getResources().getStringArray(R.array.wind_messures_values)[0]) ? String.valueOf(currentWeatherObj.getVis_km()) : String.valueOf(currentWeatherObj.getVis_miles());
+        mActivityBinding.tvVisibility.setText(vis + " " + visType);
+
+        //press
+        String pressType = SettingsPreferences.getSharedPrefsString(App.getAppCtx().getResources().getString(R.string.stg_pressure), "mb");
+        String press = pressType.equals(App.getAppCtx().getResources().getStringArray(R.array.press_messures_values)[0]) ? String.valueOf(currentWeatherObj.getPressure_mb()) : String.valueOf(currentWeatherObj.getPressure_in());
+        mActivityBinding.tvPressure.setText(press + " " + pressType);
+
     }
 
     private void loadTodaysHoursWeather(ForecastObj forecastObj) {
@@ -111,32 +135,51 @@ public class MainActivity extends BaseActivity implements
 
     private void loadDaysWeather(ForecastObj forecastObj) {
         ForecastDayObj[] forecastdays = forecastObj.getForecastday();
+        String degreeType = SettingsPreferences.getSharedPrefsString(App.getAppCtx().getResources().getString(R.string.stg_temp), "°C");
+
         if (forecastdays.length == 3) {
             String todayMood = App.getAppCtx().getResources().getString(R.string.txt_today) + " · " + forecastdays[0].getDay().getCondition().getText();
             mActivityBinding.tvMoodToday.setText(todayMood);
-            mActivityBinding.tvTempMinToday.setText(String.valueOf(forecastdays[0].getDay().getMintemp_c()));
-            mActivityBinding.tvTempMaxToday.setText(forecastdays[0].getDay().getMaxtemp_c() + " °C");
+
+            String tempMinToday = degreeType.equals(App.getAppCtx().getResources().getStringArray(R.array.temp_messures_values)[0]) ? String.valueOf(forecastdays[0].getDay().getMintemp_c()) : String.valueOf(forecastdays[0].getDay().getMintemp_f());
+            mActivityBinding.tvTempMinToday.setText(tempMinToday + degreeType);
+
+            String tempMaxToday = degreeType.equals(App.getAppCtx().getResources().getStringArray(R.array.temp_messures_values)[0]) ? String.valueOf(forecastdays[0].getDay().getMaxtemp_c()) : String.valueOf(forecastdays[0].getDay().getMaxtemp_f());
+            mActivityBinding.tvTempMaxToday.setText(tempMaxToday + degreeType);
+
             Picasso.with(MainActivity.this)
                     .load("http://" + forecastdays[0].getDay().getCondition().getIcon())
                     .fit()
                     .centerCrop()
                     .into(mActivityBinding.ivMmodToday);
 
+
             String tomorowMood = App.getAppCtx().getResources().getString(R.string.txt_tomorrow) + " · " + forecastdays[1].getDay().getCondition().getText();
             mActivityBinding.tvMoodTomorrow.setText(tomorowMood);
-            mActivityBinding.tvTempMinTomorrow.setText(String.valueOf(forecastdays[1].getDay().getMintemp_c()));
-            mActivityBinding.tvTempMaxTomorrow.setText(forecastdays[1].getDay().getMaxtemp_c() + " °C");
+
+            String tempMinTomorrow = degreeType.equals(App.getAppCtx().getResources().getStringArray(R.array.temp_messures_values)[0]) ? String.valueOf(forecastdays[1].getDay().getMintemp_c()) : String.valueOf(forecastdays[1].getDay().getMintemp_f());
+            mActivityBinding.tvTempMinTomorrow.setText(tempMinTomorrow + degreeType);
+
+            String tempMaxTomorrow = degreeType.equals(App.getAppCtx().getResources().getStringArray(R.array.temp_messures_values)[0]) ? String.valueOf(forecastdays[1].getDay().getMaxtemp_c()) : String.valueOf(forecastdays[1].getDay().getMaxtemp_f());
+            mActivityBinding.tvTempMaxTomorrow.setText(tempMaxTomorrow + degreeType);
+
             Picasso.with(MainActivity.this)
                     .load("http://" + forecastdays[1].getDay().getCondition().getIcon())
                     .fit()
                     .centerCrop()
                     .into(mActivityBinding.ivMmodTomorrow);
 
+
             String afterTomWeekDay = new SimpleDateFormat("EE", Locale.ENGLISH).format(forecastdays[2].getDate_epoch() * 1000);
             String afterTomorrowMood = afterTomWeekDay + " · " + forecastdays[2].getDay().getCondition().getText();
             mActivityBinding.tvMoodAftTomorrow.setText(afterTomorrowMood);
-            mActivityBinding.tvTempMinAftTomorrow.setText(String.valueOf(forecastdays[2].getDay().getMintemp_c()));
-            mActivityBinding.tvTempMaxAftTomorrow.setText(forecastdays[2].getDay().getMaxtemp_c() + " °C");
+
+            String tempMinAftTomorrow = degreeType.equals(App.getAppCtx().getResources().getStringArray(R.array.temp_messures_values)[0]) ? String.valueOf(forecastdays[2].getDay().getMintemp_c()) : String.valueOf(forecastdays[2].getDay().getMintemp_f());
+            mActivityBinding.tvTempMinAftTomorrow.setText(tempMinAftTomorrow + degreeType);
+
+            String tempMaxAftTomorrow = degreeType.equals(App.getAppCtx().getResources().getStringArray(R.array.temp_messures_values)[0]) ? String.valueOf(forecastdays[2].getDay().getMaxtemp_c()) : String.valueOf(forecastdays[2].getDay().getMaxtemp_f());
+            mActivityBinding.tvTempMaxAftTomorrow.setText(tempMaxAftTomorrow + degreeType);
+
             Picasso.with(MainActivity.this)
                     .load("http://" + forecastdays[2].getDay().getCondition().getIcon())
                     .fit()
@@ -158,9 +201,10 @@ public class MainActivity extends BaseActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_details:
-                // TODO: 21/02/2019 to set on internal brawser
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.apixu.com/weather/"));
-                startActivity(browserIntent);
+                Intent intentAbout = new Intent(MainActivity.this, WebBrowserActivity.class);
+                intentAbout.putExtra(GenericConstants.KEY_EXTRA_BROWSER_TITLE, App.getAppCtx().getResources().getString(R.string.txt_det_weather));
+                intentAbout.putExtra(GenericConstants.KEY_EXTRA_BROWSER_LINK, "https://www.apixu.com/weather/");
+                startActivity(intentAbout);
                 break;
 
             case R.id.tv_next_days:
@@ -174,8 +218,7 @@ public class MainActivity extends BaseActivity implements
                 break;
 
             case R.id.btn_more:
-                // TODO: 25/02/2019  
-                showSnack(mActivityBinding.mainCoord, "Settings comming soon", true);
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 break;
         }
     }

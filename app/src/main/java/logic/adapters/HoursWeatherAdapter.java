@@ -11,6 +11,8 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import data.App;
+import data.SettingsPreferences;
 import data.model.HourWeatherObj;
 import logic.helpers.DataFormatConverter;
 
@@ -33,10 +35,17 @@ public class HoursWeatherAdapter extends RecyclerView.Adapter<HoursWeatherAdapte
         HourWeatherObj hourWeatherObj = mData.get(position);
 
         if (hourWeatherObj != null) {
-            viewHolder.tvTemp.setText(String.valueOf(hourWeatherObj.getTemp_c()) + " °C");
-            viewHolder.tvWind.setText(String.valueOf(hourWeatherObj.getWind_kph()) + " km/h");
-            viewHolder.tvHour.setText(DataFormatConverter.getPrettyHour(hourWeatherObj.getTime()));
+            //temp
+            String degreeType = SettingsPreferences.getSharedPrefsString(App.getAppCtx().getResources().getString(R.string.stg_temp), "°C");
+            String temp = degreeType.equals(App.getAppCtx().getResources().getStringArray(R.array.temp_messures_values)[0]) ? String.valueOf(hourWeatherObj.getTemp_c()) : String.valueOf(hourWeatherObj.getTemp_f());
+            viewHolder.tvTemp.setText(temp + degreeType);
 
+            //wind
+            String speedType = SettingsPreferences.getSharedPrefsString(App.getAppCtx().getResources().getString(R.string.stg_wind_speed), "kph");
+            String speed = degreeType.equals(App.getAppCtx().getResources().getStringArray(R.array.wind_messures_values)[0]) ? String.valueOf(hourWeatherObj.getWind_kph()) : String.valueOf(hourWeatherObj.getWind_mph());
+            viewHolder.tvWind.setText(speed + " " + speedType);
+
+            viewHolder.tvHour.setText(DataFormatConverter.getPrettyHour(hourWeatherObj.getTime()));
             viewHolder.viewTemp.setLayoutParams(DataFormatConverter.getAudienceViewParams(hourWeatherObj.getHeightValDp()));
         }
     }

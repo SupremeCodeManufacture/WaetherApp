@@ -16,10 +16,10 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import data.App;
+import data.SettingsPreferences;
 import data.model.CurrentWeatherObj;
 import data.model.ForecastDayObj;
 import data.model.LocationObj;
-import logic.helpers.MyLogs;
 import logic.listeners.OnLocationSelectedListener;
 
 public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.ViewHolder> {
@@ -60,14 +60,26 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.View
         LocationObj locationObj = mData.get(position);
 
         if (locationObj != null) {
+            String degreeType = SettingsPreferences.getSharedPrefsString(App.getAppCtx().getResources().getString(R.string.stg_temp), "°C");
+
             viewHolder.tvName.setText(locationObj.getName());
             viewHolder.tvDescr.setText(locationObj.getCountry());
 
             CurrentWeatherObj currentWeatherObj = locationObj.getCurrentWeatherObj();
             if (currentWeatherObj != null) {
-                viewHolder.tvCurTemp.setText(String.valueOf(currentWeatherObj.getTemp_c()));
-                viewHolder.tvHumidity.setText(App.getAppCtx().getResources().getString(R.string.txt_hum) + ": " + currentWeatherObj.getHumidity() + "%  |  ");
-                viewHolder.tvWind.setText(App.getAppCtx().getResources().getString(R.string.txt_wind) + ": " + currentWeatherObj.getWind_kph() + " km/h · " + currentWeatherObj.getWind_dir());
+
+                //temp
+                String temp = degreeType.equals(App.getAppCtx().getResources().getStringArray(R.array.temp_messures_values)[0]) ? String.valueOf(currentWeatherObj.getTemp_c()) : String.valueOf(currentWeatherObj.getTemp_f());
+                viewHolder.tvCurTemp.setText(temp);
+                viewHolder.tvDegreeType.setText(degreeType);
+
+                //humyd
+                viewHolder.tvHumidity.setText(currentWeatherObj.getHumidity() + "%");
+
+                //wind
+                String speedType = SettingsPreferences.getSharedPrefsString(App.getAppCtx().getResources().getString(R.string.stg_wind_speed), "kph");
+                String speed = degreeType.equals(App.getAppCtx().getResources().getStringArray(R.array.wind_messures_values)[0]) ? String.valueOf(currentWeatherObj.getWind_kph()) : String.valueOf(currentWeatherObj.getWind_mph());
+                viewHolder.tvWind.setText(speed + " " + speedType);
 
                 Picasso.with(mActivityCtx)
                         .load("http://" + locationObj.getCurrentWeatherObj().getCondition().getIcon())
@@ -76,17 +88,21 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.View
                         .into(viewHolder.ivMood);
 
             } else {
+                //temp
                 viewHolder.tvCurTemp.setText("-");
-                viewHolder.tvHumidity.setText(App.getAppCtx().getResources().getString(R.string.txt_hum) + ": -  |  ");
-                viewHolder.tvWind.setText(App.getAppCtx().getResources().getString(R.string.txt_wind) + ": -");
+                viewHolder.tvHumidity.setText("-");
+                viewHolder.tvWind.setText("-");
 
                 viewHolder.ivMood.setImageResource(R.color.white);
             }
 
             ForecastDayObj forecastDayObj = locationObj.getForecastObj() != null ? locationObj.getForecastObj().getForecastday()[0] : null;
             if (forecastDayObj != null) {
-                viewHolder.tvTmepMin.setText(String.valueOf(forecastDayObj.getDay().getMintemp_c()) + " °C");
-                viewHolder.tvTempMax.setText(String.valueOf(forecastDayObj.getDay().getMaxtemp_c()) + " °C");
+                String tempMin = degreeType.equals(App.getAppCtx().getResources().getStringArray(R.array.temp_messures_values)[0]) ? String.valueOf(forecastDayObj.getDay().getMintemp_c()) : String.valueOf(forecastDayObj.getDay().getMintemp_f());
+                viewHolder.tvTmepMin.setText(tempMin + degreeType);
+
+                String tempMax = degreeType.equals(App.getAppCtx().getResources().getStringArray(R.array.temp_messures_values)[0]) ? String.valueOf(forecastDayObj.getDay().getMaxtemp_c()) : String.valueOf(forecastDayObj.getDay().getMaxtemp_f());
+                viewHolder.tvTempMax.setText(tempMax + degreeType);
 
             } else {
                 viewHolder.tvTmepMin.setText("-");
@@ -102,7 +118,7 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.View
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         MaterialCardView rvItm;
-        TextView tvName, tvDescr, tvCurTemp, tvHumidity, tvWind, tvTmepMin, tvTempMax;
+        TextView tvName, tvDescr, tvCurTemp, tvDegreeType, tvHumidity, tvWind, tvTmepMin, tvTempMax;
         ImageView ivMood;
 
         ViewHolder(final View itemView) {
@@ -111,6 +127,7 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.View
             tvName = (TextView) itemView.findViewById(R.id.tv_title);
             tvDescr = (TextView) itemView.findViewById(R.id.tv_descr);
             tvCurTemp = (TextView) itemView.findViewById(R.id.tv_temp);
+            tvDegreeType = (TextView) itemView.findViewById(R.id.tv_degree_type);
             tvHumidity = (TextView) itemView.findViewById(R.id.tv_humidity);
             tvWind = (TextView) itemView.findViewById(R.id.tv_wind);
             tvTmepMin = (TextView) itemView.findViewById(R.id.tv_temp_min);

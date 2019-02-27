@@ -5,16 +5,20 @@ public class HourWeatherObj {
     private String time;
     private long time_epoch;
     private float temp_c;
+    private float temp_f;
     private int is_day;
     private ConditionObj condition;
     private float wind_kph;
+    private float wind_mph;
     private float wind_degree;
     private String wind_dir;
     private float pressure_mb;
+    private float pressure_in;
     private float precip_mm;
     private int humidity;
     private int cloud;
     private float feelslike_c;
+    private float feelslike_f;
     private float vis_km;
 
     private int heightValDp;
@@ -138,5 +142,37 @@ public class HourWeatherObj {
 
     public void setHeightValDp(int heightValDp) {
         this.heightValDp = heightValDp;
+    }
+
+    public float getTemp_f() {
+        return temp_f;
+    }
+
+    public void setTemp_f(float temp_f) {
+        this.temp_f = temp_f;
+    }
+
+    public float getWind_mph() {
+        return wind_mph;
+    }
+
+    public void setWind_mph(float wind_mph) {
+        this.wind_mph = wind_mph;
+    }
+
+    public float getPressure_in() {
+        return pressure_in;
+    }
+
+    public void setPressure_in(float pressure_in) {
+        this.pressure_in = pressure_in;
+    }
+
+    public float getFeelslike_f() {
+        return feelslike_f;
+    }
+
+    public void setFeelslike_f(float feelslike_f) {
+        this.feelslike_f = feelslike_f;
     }
 }

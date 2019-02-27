@@ -3,11 +3,16 @@ package data.model;
 public class DayWeatherObj {
 
     private float maxtemp_c;
+    private float maxtemp_f;
     private float mintemp_c;
+    private float mintemp_f;
     private float avgtemp_c;
+    private float avgtemp_f;
     private float maxwind_kph;
+    private float maxwind_mph;
     private float totalprecip_mm;
     private float avgvis_km;
+    private float avgvis_miles;
     private float avghumidity;
     private ConditionObj condition;
     private float uv;
@@ -82,5 +87,45 @@ public class DayWeatherObj {
 
     public void setUv(float uv) {
         this.uv = uv;
+    }
+
+    public float getMaxtemp_f() {
+        return maxtemp_f;
+    }
+
+    public void setMaxtemp_f(float maxtemp_f) {
+        this.maxtemp_f = maxtemp_f;
+    }
+
+    public float getMintemp_f() {
+        return mintemp_f;
+    }
+
+    public void setMintemp_f(float mintemp_f) {
+        this.mintemp_f = mintemp_f;
+    }
+
+    public float getAvgtemp_f() {
+        return avgtemp_f;
+    }
+
+    public void setAvgtemp_f(float avgtemp_f) {
+        this.avgtemp_f = avgtemp_f;
+    }
+
+    public float getMaxwind_mph() {
+        return maxwind_mph;
+    }
+
+    public void setMaxwind_mph(float maxwind_mph) {
+        this.maxwind_mph = maxwind_mph;
+    }
+
+    public float getAvgvis_miles() {
+        return avgvis_miles;
+    }
+
+    public void setAvgvis_miles(float avgvis_miles) {
+        this.avgvis_miles = avgvis_miles;
     }
 }

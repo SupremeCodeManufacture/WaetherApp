@@ -38,6 +38,15 @@
             android:name="view.activity.WeatherDetailsActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name="view.activity.SettingsActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName="view.activity.SplashActivity"
+            android:theme="@style/AppThemeWithActionBar" />
+
+        <activity
+            android:name="view.activity.WebBrowserActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

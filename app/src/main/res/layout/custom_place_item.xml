@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/material_half"
-    android:layout_marginEnd="@dimen/material_half"
     android:layout_marginTop="@dimen/material_s_half"
+    android:layout_marginEnd="@dimen/material_half"
     android:layout_marginBottom="@dimen/material_s_half">
 
     <LinearLayout
@@ -79,6 +79,7 @@
                         tools:text="-23" />
 
                     <TextView
+                        android:id="@+id/tv_degree_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -111,6 +112,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/zone_temps"
                 android:orientation="horizontal">
 
@@ -118,17 +120,26 @@
                     android:id="@+id/tv_humidity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableStart="@mipmap/ic_humidity"
+                    android:drawablePadding="@dimen/material_s_half"
+                    android:drawableTint="@color/divider"
+                    android:gravity="center_vertical"
                     android:textColor="@color/primary_text_normal"
                     android:textSize="@dimen/txt_small"
-                    tools:text="Vlajnost 89% |" />
+                    tools:text="89%" />
 
                 <TextView
                     android:id="@+id/tv_wind"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:drawableStart="@mipmap/ic_wind"
+                    android:drawablePadding="@dimen/material_s_half"
+                    android:drawableTint="@color/divider"
+                    android:gravity="center_vertical"
                     android:textColor="@color/primary_text_normal"
                     android:textSize="@dimen/txt_small"
-                    tools:text=" Veter 12 km/s" />
+                    tools:text="12 kmph * NW" />
 
             </LinearLayout>
 
@@ -137,6 +148,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:orientation="horizontal">
 
