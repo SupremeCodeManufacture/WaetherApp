@@ -1,8 +1,13 @@
 package logic.helpers;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.res.Resources;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
@@ -10,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.google.android.gms.common.util.Strings;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -268,5 +274,27 @@ public class DataFormatConverter {
         params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
         return params;
+    }
+
+    @SuppressLint("MissingPermission")
+    public static LatLng getMyLocation() {
+        if (PermissionsHelper.hasPermissions(PermissionsHelper.PERMISSIONS_LOCATION)) {
+            LocationManager lm = (LocationManager) App.getAppCtx().getSystemService(Context.LOCATION_SERVICE);
+            Location myLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            if (myLocation == null) {
+                Criteria criteria = new Criteria();
+                criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+
+                String provider = lm.getBestProvider(criteria, true);
+                myLocation = lm.getLastKnownLocation(provider);
+            }
+
+            if (myLocation != null) {
+                return new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+            }
+        }
+
+        return null;
     }
 }

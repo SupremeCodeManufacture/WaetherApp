@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppThemeDay"
         android:usesCleartextTraffic="true">
 
         <activity
@@ -42,7 +42,7 @@
             android:name="view.activity.SettingsActivity"
             android:screenOrientation="portrait"
             android:parentActivityName="view.activity.SplashActivity"
-            android:theme="@style/AppThemeWithActionBar" />
+            android:theme="@style/AppActionBarThemeDay" />
 
         <activity
             android:name="view.activity.WebBrowserActivity"

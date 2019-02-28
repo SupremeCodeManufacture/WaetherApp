@@ -10,12 +10,14 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import data.App;
 import data.GenericConstants;
 import data.model.DataRs;
 import data.model.ForecastDayObj;
 import data.view_model.WeatherDetailsActivityViewModel;
 import logic.adapters.DaysWeatherAdapter;
 import logic.async_await.OnAsyncDoneRsObjListener;
+import logic.helpers.ThemeColorsHelper;
 import logic.listeners.OnFetchDataErrListener;
 import logic.network.RequestManager;
 import view.custom.WrapLayoutManager;
@@ -32,9 +34,12 @@ public class WeatherDetailsActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getTheme().applyStyle(ThemeColorsHelper.getTheme(App.isDAY()), true);
         mActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_days_weather);
 
         bindViewModel();
+
+        mActivityBinding.toolbarDays.setBackgroundResource(ThemeColorsHelper.getColorPrimary(App.isDAY()));
 
         String locQuery = getIntent().getStringExtra(GenericConstants.KEY_EXTRA_LOC_COORDONATES);
 

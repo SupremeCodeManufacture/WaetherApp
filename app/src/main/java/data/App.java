@@ -8,6 +8,8 @@ public class App extends Application {
     private static Context mContext;
     public static int APP_BUILDS;
     public static String SELECTED_LANGUAGE;
+    public static String SELECTED_LOC;
+    public static boolean DAY;
 
 
     @Override
@@ -39,5 +41,22 @@ public class App extends Application {
     public static void setSelectedLanguage(String selectedLanguage) {
         SELECTED_LANGUAGE = selectedLanguage;
         SharedPrefs.setSharedPreferencesString(GenericConstants.KEY_SP_SELECTED_LANGUAGE, selectedLanguage);
+    }
+
+    public static String getSelectedLoc() {
+        return SELECTED_LOC != null ? SELECTED_LOC : SharedPrefs.getSharedPreferencesString(GenericConstants.KEY_SP_SELECTED_LOC, null);
+    }
+
+    public static void setSelectedLoc(String selectedLoc) {
+        SELECTED_LOC = selectedLoc;
+        SharedPrefs.setSharedPreferencesString(GenericConstants.KEY_SP_SELECTED_LOC, selectedLoc);
+    }
+
+    public static boolean isDAY() {
+        return DAY;
+    }
+
+    public static void setDAY(boolean DAY) {
+        App.DAY = DAY;
     }
 }

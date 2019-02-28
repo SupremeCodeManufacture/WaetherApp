@@ -16,6 +16,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/toolbar_days"
                 android:background="@color/primary_dark"
                 app:contentInsetStart="0dp">
 

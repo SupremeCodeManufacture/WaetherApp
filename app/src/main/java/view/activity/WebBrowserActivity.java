@@ -14,8 +14,10 @@ import com.supreme.manufacture.weather.R;
 import com.supreme.manufacture.weather.databinding.ActivityBrowserBinding;
 
 import androidx.databinding.DataBindingUtil;
+import data.App;
 import data.GenericConstants;
 import logic.helpers.MyLogs;
+import logic.helpers.ThemeColorsHelper;
 import logic.network.NetworkState;
 
 
@@ -26,10 +28,12 @@ public class WebBrowserActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getTheme().applyStyle(ThemeColorsHelper.getTheme(App.isDAY()), true);
         mActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_browser);
 
         setupClient();
 
+        mActivityBinding.toolbarWeb.setBackgroundResource(ThemeColorsHelper.getColorPrimary(App.isDAY()));
         mActivityBinding.tvToolbarPlace.setText(getIntent().getStringExtra(GenericConstants.KEY_EXTRA_BROWSER_TITLE));
         loadHtmlData(getIntent().getStringExtra(GenericConstants.KEY_EXTRA_BROWSER_LINK));
     }

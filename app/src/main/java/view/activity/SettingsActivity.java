@@ -13,6 +13,7 @@ import com.supreme.manufacture.weather.R;
 
 import data.App;
 import data.GenericConstants;
+import logic.helpers.ThemeColorsHelper;
 
 public class SettingsActivity extends BaseActivity {
 
@@ -27,6 +28,7 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getTheme().applyStyle(ThemeColorsHelper.getTitleTheme(App.isDAY()), true);
         getFragmentManager().beginTransaction().replace(android.R.id.content, new MyPreferenceFragment()).commit();
 
         if (getSupportActionBar() != null)

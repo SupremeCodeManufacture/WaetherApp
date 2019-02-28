@@ -31,6 +31,7 @@ import logic.async_await.OnAsyncDoneNoRsListener;
 import logic.async_await.OnAsyncDoneRsObjListener;
 import logic.helpers.DataFormatConverter;
 import logic.helpers.MyLogs;
+import logic.helpers.ThemeColorsHelper;
 import logic.listeners.OnDualSelectionListener;
 import logic.listeners.OnLocationSelectedListener;
 import logic.network.RequestManager;
@@ -50,9 +51,12 @@ public class PlacesActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getTheme().applyStyle(ThemeColorsHelper.getTheme(App.isDAY()), true);
         mActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_places);
 
         bindViewModel();
+
+        mActivityBinding.toolbarPlaces.setBackgroundResource(ThemeColorsHelper.getColorPrimary(App.isDAY()));
 
         onProgressShow(mActivityBinding.progressBar);
         asyncLoadLocations();

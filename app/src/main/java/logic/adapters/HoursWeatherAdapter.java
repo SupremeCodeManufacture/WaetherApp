@@ -15,6 +15,7 @@ import data.App;
 import data.SettingsPreferences;
 import data.model.HourWeatherObj;
 import logic.helpers.DataFormatConverter;
+import logic.helpers.ThemeColorsHelper;
 
 public class HoursWeatherAdapter extends RecyclerView.Adapter<HoursWeatherAdapter.ViewHolder> {
 
@@ -67,6 +68,7 @@ public class HoursWeatherAdapter extends RecyclerView.Adapter<HoursWeatherAdapte
             tvHour = (TextView) itemView.findViewById(R.id.tv_time);
 
             viewTemp = (View) itemView.findViewById(R.id.view_temp);
+            viewTemp.setBackgroundResource(ThemeColorsHelper.getColorPrimary(App.isDAY()));
         }
     }
 }

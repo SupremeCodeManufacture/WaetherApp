@@ -15,6 +15,7 @@
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/primary_dark"
@@ -44,7 +45,9 @@
                         android:layout_centerVertical="true"
                         android:layout_toStartOf="@+id/btn_more"
                         android:layout_toEndOf="@+id/btn_add"
+                        android:ellipsize="end"
                         android:gravity="center_horizontal"
+                        android:maxLines="2"
                         tools:text="Moskow" />
 
                     <ImageButton
@@ -66,6 +69,7 @@
 
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/zone_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/primary"
@@ -74,7 +78,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/material_half">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -137,8 +142,10 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/height_row_box"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/height_row_box"
                         android:paddingStart="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/material_s_half"
                         android:paddingEnd="@dimen/activity_horizontal_margin">
 
                         <TextView
@@ -194,6 +201,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
+                            android:paddingTop="@dimen/material_s_half"
                             android:layout_alignParentBottom="true"
                             android:background="@color/white_50" />
 
@@ -201,7 +209,9 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/height_row_box"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/height_row_box"
+                        android:paddingTop="@dimen/material_s_half"
                         android:paddingStart="@dimen/activity_horizontal_margin"
                         android:paddingEnd="@dimen/activity_horizontal_margin">
 
@@ -258,6 +268,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
+                            android:paddingTop="@dimen/material_s_half"
                             android:layout_alignParentBottom="true"
                             android:background="@color/white_50" />
 
@@ -265,8 +276,9 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/height_row_box"
-                        android:paddingStart="@dimen/activity_horizontal_margin"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/height_row_box"
+                        android:paddingTop="@dimen/material_s_half"                        android:paddingStart="@dimen/activity_horizontal_margin"
                         android:paddingEnd="@dimen/activity_horizontal_margin">
 
                         <TextView
@@ -324,6 +336,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:paddingTop="@dimen/material_s_half"
                         android:background="@color/white_50" />
 
                     <TextView

@@ -1,9 +1,15 @@
 package view.activity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 import com.supreme.manufacture.weather.R;
 import com.supreme.manufacture.weather.databinding.ActivityMainBinding;
@@ -12,7 +18,9 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -29,8 +37,13 @@ import data.view_model.MainActivityViewModel;
 import logic.adapters.HoursWeatherAdapter;
 import logic.async_await.OnAsyncDoneRsObjListener;
 import logic.helpers.DataFormatConverter;
+import logic.helpers.MyLogs;
+import logic.helpers.PermissionsHelper;
+import logic.helpers.ThemeColorsHelper;
+import logic.listeners.OnDualSelectionListener;
 import logic.listeners.OnFetchDataErrListener;
 import logic.network.RequestManager;
+import view.custom.CustomDialogs;
 import view.custom.WrapLayoutManager;
 
 public class MainActivity extends BaseActivity implements
@@ -44,23 +57,77 @@ public class MainActivity extends BaseActivity implements
     private String mCoordQuery;
 
 
+    final LocationManager mLocationManager = (LocationManager) App.getAppCtx().getSystemService(Context.LOCATION_SERVICE);
+    final LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            if (isActivityValid()) {
+                MyLogs.LOG("MainActivity", "mLocationListener", "location: " + location.toString());
+                onLoadLocationWeather("", location.getLatitude() + "," + location.getLongitude());
+            }
+
+            mLocationManager.removeUpdates(mLocationListener);
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            onWarnLocOff();
+        }
+    };
+
+
     @Override
     protected void onResume() {
         super.onResume();
 
-        // if there is a selected city use it - if no try to detect location - if permissions
-        // TODO: 24/02/2019
-        onLoadLocationWeather("", "60.0875092,30.2659864");
+        //if no selected or prevously loaded city then try to auto detect location
+        if (App.getSelectedLoc() != null) onLoadLocationWeather("", App.getSelectedLoc());
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getTheme().applyStyle(ThemeColorsHelper.getTheme(App.isDAY()), true);
         mActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
+        manageDayNightColors();
+
         bindViewModel();
+
+        if (App.getSelectedLoc() == null)
+            CustomDialogs.createSimpleDialog(
+                    MainActivity.this,
+                    App.getAppCtx().getResources().getString(R.string.txt_warn),
+                    App.getAppCtx().getResources().getString(R.string.txt_ask_loc),
+                    true,
+                    App.getAppCtx().getResources().getString(R.string.txt_allow),
+                    App.getAppCtx().getResources().getString(R.string.txt_set_manually),
+                    new OnDualSelectionListener() {
+                        @Override
+                        public void onPositiveButtonClick() {
+                            initMyLocation();
+                        }
+
+                        @Override
+                        public void onNegativeButtonClick() {
+                            startActivityForResult(new Intent(MainActivity.this, PlacesActivity.class), NEW_LOC_SELECTION_CODE);
+                        }
+                    });
     }
 
+    private void manageDayNightColors() {
+        mActivityBinding.toolbarMain.setBackgroundResource(ThemeColorsHelper.getColorPrimaryDark(App.isDAY()));
+        mActivityBinding.zoneMain.setBackgroundResource(ThemeColorsHelper.getColorPrimary(App.isDAY()));
+    }
 
     private void bindViewModel() {
         mViewModel = ViewModelProviders.of(MainActivity.this).get(MainActivityViewModel.class);
@@ -138,7 +205,7 @@ public class MainActivity extends BaseActivity implements
         String degreeType = SettingsPreferences.getSharedPrefsString(App.getAppCtx().getResources().getString(R.string.stg_temp), "°C");
 
         if (forecastdays.length == 3) {
-            String todayMood = App.getAppCtx().getResources().getString(R.string.txt_today) + " · " + forecastdays[0].getDay().getCondition().getText();
+            String todayMood = App.getAppCtx().getResources().getString(R.string.txt_today) + " • " + forecastdays[0].getDay().getCondition().getText();
             mActivityBinding.tvMoodToday.setText(todayMood);
 
             String tempMinToday = degreeType.equals(App.getAppCtx().getResources().getStringArray(R.array.temp_messures_values)[0]) ? String.valueOf(forecastdays[0].getDay().getMintemp_c()) : String.valueOf(forecastdays[0].getDay().getMintemp_f());
@@ -154,7 +221,7 @@ public class MainActivity extends BaseActivity implements
                     .into(mActivityBinding.ivMmodToday);
 
 
-            String tomorowMood = App.getAppCtx().getResources().getString(R.string.txt_tomorrow) + " · " + forecastdays[1].getDay().getCondition().getText();
+            String tomorowMood = App.getAppCtx().getResources().getString(R.string.txt_tomorrow) + " • " + forecastdays[1].getDay().getCondition().getText();
             mActivityBinding.tvMoodTomorrow.setText(tomorowMood);
 
             String tempMinTomorrow = degreeType.equals(App.getAppCtx().getResources().getStringArray(R.array.temp_messures_values)[0]) ? String.valueOf(forecastdays[1].getDay().getMintemp_c()) : String.valueOf(forecastdays[1].getDay().getMintemp_f());
@@ -171,7 +238,7 @@ public class MainActivity extends BaseActivity implements
 
 
             String afterTomWeekDay = new SimpleDateFormat("EE", Locale.ENGLISH).format(forecastdays[2].getDate_epoch() * 1000);
-            String afterTomorrowMood = afterTomWeekDay + " · " + forecastdays[2].getDay().getCondition().getText();
+            String afterTomorrowMood = afterTomWeekDay + " • " + forecastdays[2].getDay().getCondition().getText();
             mActivityBinding.tvMoodAftTomorrow.setText(afterTomorrowMood);
 
             String tempMinAftTomorrow = degreeType.equals(App.getAppCtx().getResources().getStringArray(R.array.temp_messures_values)[0]) ? String.valueOf(forecastdays[2].getDay().getMintemp_c()) : String.valueOf(forecastdays[2].getDay().getMintemp_f());
@@ -191,11 +258,34 @@ public class MainActivity extends BaseActivity implements
     private void onLoadLocationWeather(String locName, String locQuery) {
         mActivityBinding.tvToolbarPlace.setText(locName);
         mCoordQuery = locQuery;
+        App.setSelectedLoc(locQuery);
 
         onProgressShow(mActivityBinding.progressBar);
         RequestManager.asyncGetForecastWeather(locQuery, "3", MainActivity.this, MainActivity.this);
     }
 
+    private void initMyLocation() {
+        if (!PermissionsHelper.hasPermissions(PermissionsHelper.PERMISSIONS_LOCATION)) {
+            ActivityCompat.requestPermissions(MainActivity.this, PermissionsHelper.PERMISSIONS_LOCATION, PermissionsHelper.PERMISSION_CODE);
+
+        } else {
+            getDeviceLocation();
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getDeviceLocation() {
+        if (PermissionsHelper.hasPermissions(PermissionsHelper.PERMISSIONS_LOCATION)) {
+            LatLng myCurLoc = DataFormatConverter.getMyLocation();
+
+            if (myCurLoc != null) {
+                onLoadLocationWeather("", myCurLoc.latitude + "," + myCurLoc.longitude);
+
+            } else {
+                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, mLocationListener);
+            }
+        }
+    }
 
     @Override
     public void onClick(View v) {
@@ -244,6 +334,25 @@ public class MainActivity extends BaseActivity implements
 
             if (name != null && coord != null)
                 onLoadLocationWeather(name, coord);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PermissionsHelper.PERMISSION_CODE) {
+            if (PermissionsHelper.areAllPermisionsGranted(grantResults)) {
+                initMyLocation();
+
+            } else {
+                CustomDialogs.createSimpleDialog(
+                        MainActivity.this,
+                        App.getAppCtx().getResources().getString(R.string.txt_warn),
+                        App.getAppCtx().getResources().getString(R.string.txt_no_loc_permissions),
+                        false,
+                        App.getAppCtx().getResources().getString(R.string.txt_dismiss),
+                        null,
+                        null);
+            }
         }
     }
 }
