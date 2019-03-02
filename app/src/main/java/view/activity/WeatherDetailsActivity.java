@@ -2,7 +2,11 @@ package view.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 
+import com.google.android.gms.ads.AdSize;
+import com.soloviof.easyads.AdsRepo;
+import com.soloviof.easyads.CustomizeAds;
 import com.supreme.manufacture.weather.R;
 import com.supreme.manufacture.weather.databinding.ActivityDaysWeatherBinding;
 
@@ -45,6 +49,8 @@ public class WeatherDetailsActivity extends BaseActivity implements
 
         onProgressShow(mActivityBinding.progressBar);
         RequestManager.asyncGetForecastWeather(locQuery, "10", WeatherDetailsActivity.this, WeatherDetailsActivity.this);
+
+        setupAdBanner(mActivityBinding.zoneBanner.llBanner,WeatherDetailsActivity.this,"weather details screen"  );
     }
 
 
@@ -99,4 +105,8 @@ public class WeatherDetailsActivity extends BaseActivity implements
         }
     }
 
+    @Override
+    void decideDemoOrPro() {
+        //no need to implement
+    }
 }

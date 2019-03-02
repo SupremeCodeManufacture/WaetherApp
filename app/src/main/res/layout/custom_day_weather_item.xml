@@ -35,7 +35,7 @@
         android:background="@drawable/bg_day_color"
         android:gravity="center_horizontal"
         android:paddingTop="@dimen/material_24"
-        android:paddingBottom="40dp"
+        android:paddingBottom="@dimen/dim_padd_day"
         android:textSize="@dimen/txt_large"
         android:textStyle="bold"
         tools:text="-88°C" />
@@ -48,7 +48,7 @@
         android:layout_marginBottom="@dimen/material_24"
         android:background="@drawable/bg_noght_color"
         android:gravity="center_horizontal"
-        android:paddingTop="40dp"
+        android:paddingTop="@dimen/dim_padd_day"
         android:paddingBottom="@dimen/material_24"
         android:textSize="@dimen/txt_large"
         android:textStyle="bold"

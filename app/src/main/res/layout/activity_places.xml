@@ -57,9 +57,21 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+            <FrameLayout
+                android:id="@+id/holder_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include
+                    android:id="@+id/zone_banner"
+                    layout="@layout/banner_placeholder" />
+
+            </FrameLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvItems"
                 android:layout_width="match_parent"
+                android:layout_below="@+id/holder_banner"
                 android:layout_height="match_parent" />
 
             <include

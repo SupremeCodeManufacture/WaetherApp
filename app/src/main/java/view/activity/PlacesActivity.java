@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.soloviof.easyads.InterstitialAddsHelper;
 import com.supreme.manufacture.weather.R;
 import com.supreme.manufacture.weather.databinding.ActivityPlacesBinding;
 
@@ -30,7 +31,6 @@ import logic.async_await.CallableObj;
 import logic.async_await.OnAsyncDoneNoRsListener;
 import logic.async_await.OnAsyncDoneRsObjListener;
 import logic.helpers.DataFormatConverter;
-import logic.helpers.MyLogs;
 import logic.helpers.ThemeColorsHelper;
 import logic.listeners.OnDualSelectionListener;
 import logic.listeners.OnLocationSelectedListener;
@@ -60,6 +60,13 @@ public class PlacesActivity extends BaseActivity implements
 
         onProgressShow(mActivityBinding.progressBar);
         asyncLoadLocations();
+
+        setupAdBanner(mActivityBinding.zoneBanner.llBanner, PlacesActivity.this, "places screen");
+
+        InterstitialAddsHelper.prepareInterstitialAds(
+                PlacesActivity.this,
+                App.getAppBuilds(),
+                App.getAppCtx().getResources().getString(R.string.banner_id_interstitial));
     }
 
 
@@ -227,13 +234,16 @@ public class PlacesActivity extends BaseActivity implements
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK && requestCode == PLACE_PICKER_REQUEST) {
             asyncAddLocation(PlacePicker.getPlace(this, data));
+
+            if (!App.isPaidFull() && !App.isPaidAds())
+                InterstitialAddsHelper.tryShowInterstitialAdNow(true);
         }
     }
 
 
     @Override
     public void onLocationSelectedListener(LocationObj locationObj) {
-        MyLogs.LOG("PlacesActivity", "onLocationSelectedListener", "locationObj====> " + locationObj.getName());
+        //MyLogs.LOG("PlacesActivity", "onLocationSelectedListener", "locationObj====> " + locationObj.getName());
         asyncUpdateSelection(locationObj);
     }
 
@@ -263,5 +273,11 @@ public class PlacesActivity extends BaseActivity implements
     public void onEmptyLocations() {
         mActivityBinding.noContent.rlNoContent.setVisibility(View.VISIBLE);
         mActivityBinding.rvItems.setVisibility(View.GONE);
+    }
+
+
+    @Override
+    void decideDemoOrPro() {
+        //no need to implement
     }
 }

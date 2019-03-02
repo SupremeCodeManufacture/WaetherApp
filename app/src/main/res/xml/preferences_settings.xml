@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/txt_interaction">
+    <PreferenceCategory
+        android:key="interaction"
+        android:title="@string/txt_interaction">
+
         <PreferenceScreen
             android:key="@string/stg_pro"
             android:title="@string/txt_pro" />
-
-        <PreferenceScreen
-            android:key="@string/stg_ads"
-            android:title="@string/txt_no_ads" />
 
         <PreferenceScreen
             android:key="@string/stg_rate"

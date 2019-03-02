@@ -81,6 +81,11 @@
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/material_half">
 
+                <include
+                    android:id="@+id/zone_banner"
+                    layout="@layout/banner_placeholder" />
+
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -201,9 +206,9 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:paddingTop="@dimen/material_s_half"
                             android:layout_alignParentBottom="true"
-                            android:background="@color/white_50" />
+                            android:background="@color/white_50"
+                            android:paddingTop="@dimen/material_s_half" />
 
                     </RelativeLayout>
 
@@ -211,8 +216,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="@dimen/height_row_box"
-                        android:paddingTop="@dimen/material_s_half"
                         android:paddingStart="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/material_s_half"
                         android:paddingEnd="@dimen/activity_horizontal_margin">
 
                         <TextView
@@ -268,9 +273,9 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:paddingTop="@dimen/material_s_half"
                             android:layout_alignParentBottom="true"
-                            android:background="@color/white_50" />
+                            android:background="@color/white_50"
+                            android:paddingTop="@dimen/material_s_half" />
 
                     </RelativeLayout>
 
@@ -278,7 +283,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="@dimen/height_row_box"
-                        android:paddingTop="@dimen/material_s_half"                        android:paddingStart="@dimen/activity_horizontal_margin"
+                        android:paddingStart="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/material_s_half"
                         android:paddingEnd="@dimen/activity_horizontal_margin">
 
                         <TextView
@@ -336,8 +342,8 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:paddingTop="@dimen/material_s_half"
-                        android:background="@color/white_50" />
+                        android:background="@color/white_50"
+                        android:paddingTop="@dimen/material_s_half" />
 
                     <TextView
                         android:id="@+id/tv_next_days"
@@ -363,7 +369,9 @@
                     android:orientation="vertical"
                     android:paddingStart="@dimen/activity_horizontal_margin"
                     android:paddingEnd="@dimen/activity_horizontal_margin"
-                    android:paddingBottom="@dimen/activity_horizontal_margin">
+                    android:paddingBottom="@dimen/activity_horizontal_margin"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <TextView
                         style="@style/TextBoxTitle"
@@ -694,7 +702,7 @@
             android:layout_gravity="center"
             android:indeterminate="true"
             android:indeterminateDrawable="@drawable/bg_progress_color"
-            android:visibility="invisible" />
+            android:visibility="visible" />
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

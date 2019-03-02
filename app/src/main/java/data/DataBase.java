@@ -94,16 +94,16 @@ public class DataBase extends SQLiteOpenHelper {
             if (afectedRows == 0) {
                 values.put(KEY_ID, locationObj.getId());
                 db.insertOrThrow(TABLE_LOCATIONS, null, values);
-                MyLogs.LOG("DataBase", "insertUpdateLocation", "inserted");
+                //MyLogs.LOG("DataBase", "insertUpdateLocation", "inserted");
 
             } else {
-                MyLogs.LOG("DataBase", "insertUpdateLocation", "updated");
+                //MyLogs.LOG("DataBase", "insertUpdateLocation", "updated");
             }
 
             db.setTransactionSuccessful();
 
         } catch (Throwable ex) {
-            MyLogs.LOG("DataBase", "insertUpdateLocation", "ERROR --> ex: " + ex.getMessage());
+            //MyLogs.LOG("DataBase", "insertUpdateLocation", "ERROR --> ex: " + ex.getMessage());
             ex.printStackTrace();
 
         } finally {
@@ -139,19 +139,19 @@ public class DataBase extends SQLiteOpenHelper {
             db.setTransactionSuccessful();
 
         } catch (Exception ex) {
-            MyLogs.LOG("DataBase", "selectAllCountries", "ERROR --> ex: " + ex.getMessage());
+            //MyLogs.LOG("DataBase", "selectAllCountries", "ERROR --> ex: " + ex.getMessage());
             ex.printStackTrace();
 
         } finally {
             safeEndTransaction(db);
         }
 
-        MyLogs.LOG("DataBase", "selectAllCountries", "SQL - get items count -> " + list.size());
+        //MyLogs.LOG("DataBase", "selectAllCountries", "SQL - get items count -> " + list.size());
         return list;
     }
 
     public void updateSelectedLocation(String selectedId) {
-        MyLogs.LOG("DataBase", "updateSelectedLocation", "selectedId --> " + selectedId);
+        //MyLogs.LOG("DataBase", "updateSelectedLocation", "selectedId --> " + selectedId);
         SQLiteDatabase db = this.getReadableDatabase();
         db.beginTransaction();
 
@@ -169,7 +169,7 @@ public class DataBase extends SQLiteOpenHelper {
                     int status = selectedId.equals(curId) ? 1 : 0;
                     values.put(KEY_SELECTED, status);
 
-                    MyLogs.LOG("DataBase", "updateSelectedLocation", "curId --> " + curId + " status: " + status);
+                    //MyLogs.LOG("DataBase", "updateSelectedLocation", "curId --> " + curId + " status: " + status);
 
                     db.update(
                             TABLE_LOCATIONS,
@@ -183,7 +183,7 @@ public class DataBase extends SQLiteOpenHelper {
             db.setTransactionSuccessful();
 
         } catch (Exception ex) {
-            MyLogs.LOG("DataBase", "updateSelectedLocation", "ERROR --> ex: " + ex.getMessage());
+            //MyLogs.LOG("DataBase", "updateSelectedLocation", "ERROR --> ex: " + ex.getMessage());
             ex.printStackTrace();
 
         } finally {
@@ -198,12 +198,12 @@ public class DataBase extends SQLiteOpenHelper {
 
         try {
             int deletedItems = db.delete(TABLE_LOCATIONS, KEY_ID + "=?", new String[]{id});
-            MyLogs.LOG("DataBase", "deleteUserAllAccess", "deletedItems: " + deletedItems);
+            //MyLogs.LOG("DataBase", "deleteUserAllAccess", "deletedItems: " + deletedItems);
 
             db.setTransactionSuccessful();
 
         } catch (Throwable ex) {
-            MyLogs.LOG("DataBase", "deleteUserAllAccess", "ERROR --> ex: " + ex.getMessage());
+            //MyLogs.LOG("DataBase", "deleteUserAllAccess", "ERROR --> ex: " + ex.getMessage());
             ex.printStackTrace();
 
         } finally {
@@ -217,7 +217,7 @@ public class DataBase extends SQLiteOpenHelper {
             db.endTransaction();
 
         } catch (Exception ex) {
-            MyLogs.LOG("DataBase", "safeEndTransaction", "ERROR --> ex: " + ex.getMessage());
+            //MyLogs.LOG("DataBase", "safeEndTransaction", "ERROR --> ex: " + ex.getMessage());
             ex.printStackTrace();
         }
     }

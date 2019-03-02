@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.widget.Toast;
 
@@ -13,12 +14,14 @@ import com.supreme.manufacture.weather.R;
 
 import data.App;
 import data.GenericConstants;
+import logic.helpers.MyLogs;
 import logic.helpers.ThemeColorsHelper;
+import logic.payment.PaymentHelper;
+import logic.payment.util.IabResult;
 
 public class SettingsActivity extends BaseActivity {
 
     public static final String SETTING_PRO = App.getAppCtx().getResources().getString(R.string.stg_pro);
-    public static final String SETTING_NO_ADS = App.getAppCtx().getResources().getString(R.string.stg_ads);
     public static final String SETTING_SUPPORT = App.getAppCtx().getResources().getString(R.string.stg_support);
     public static final String SETTING_RATE = App.getAppCtx().getResources().getString(R.string.stg_rate);
     public static final String SETTING_TERMS = App.getAppCtx().getResources().getString(R.string.stg_terms);
@@ -30,14 +33,18 @@ public class SettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         getTheme().applyStyle(ThemeColorsHelper.getTitleTheme(App.isDAY()), true);
         getFragmentManager().beginTransaction().replace(android.R.id.content, new MyPreferenceFragment()).commit();
+        //MyLogs.LOG("SettingsActivity", "onCreate", "....");
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setTitle(getResources().getString(R.string.txt_settings));
     }
 
+    public void startPayment() {
+        //init here and payment is done when it's initializsed in listener - recreated activity
+        PaymentHelper.setUpPayments(SettingsActivity.this, SettingsActivity.this);
+    }
 
-    public static class MyPreferenceFragment extends PreferenceFragment implements
-            Preference.OnPreferenceClickListener {
+    public static class MyPreferenceFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
 
         @Override
         public void onCreate(final Bundle savedInstanceState) {
@@ -48,11 +55,14 @@ public class SettingsActivity extends BaseActivity {
         }
 
         private void setupTriggerOptions() {
+            PreferenceCategory mCategory = (PreferenceCategory) findPreference("interaction");
             Preference prefConnectionsWarn = (Preference) findPreference(SETTING_PRO);
-            prefConnectionsWarn.setOnPreferenceClickListener(this);
+            if (App.isPaidFull() || (App.isPaidUnlock() && App.isPaidAds())) {
+                mCategory.removePreference(prefConnectionsWarn);
 
-            Preference prefPush = (Preference) findPreference(SETTING_NO_ADS);
-            prefPush.setOnPreferenceClickListener(this);
+            } else {
+                prefConnectionsWarn.setOnPreferenceClickListener(this);
+            }
 
             Preference prefSyncDataWarn = (Preference) findPreference(SETTING_RATE);
             prefSyncDataWarn.setOnPreferenceClickListener(this);
@@ -73,10 +83,7 @@ public class SettingsActivity extends BaseActivity {
             String keyRes = preference.getKey();
 
             if (keyRes.equals(SETTING_PRO)) {
-                // TODO: 27/02/2019  
-
-            } else if (keyRes.equals(SETTING_NO_ADS)) {
-                // TODO: 27/02/2019  
+                ((SettingsActivity) getActivity()).startPayment();
 
             } else if (keyRes.equals(SETTING_SUPPORT)) {
                 try {
@@ -111,4 +118,22 @@ public class SettingsActivity extends BaseActivity {
         }
     }
 
+
+    @Override
+    void decideDemoOrPro() {
+        //MyLogs.LOG("SettingsActivity", "decideDemoOrPro", "....");
+        recreate();
+    }
+
+    //=============================== PAYMENTS FUNCTIONAL ========================================//
+    @Override
+    public void onIabSetupFinished(IabResult result) {
+        if (result.isSuccess()) {
+            //MyLogs.LOG("SettingsActivity", "onIabSetupFinished", "Setting up In-app Billing succesfull");
+            showUpgradeDialog();
+
+        } else {
+            //MyLogs.LOG("SettingsActivity", "onIabSetupFinished", "Problem setting up In-app Billing: " + result);
+        }
+    }
 }

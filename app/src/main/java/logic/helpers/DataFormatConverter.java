@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import com.google.android.gms.common.util.Strings;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -34,23 +35,23 @@ import data.model.DayWeatherObj;
 import data.model.ForecastObj;
 import data.model.HourWeatherObj;
 import data.model.LocationObj;
+import logic.push_notification.CloudDataObj;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 public class DataFormatConverter {
 
 
-//    public static CloudDataObj getObjFromJson(String json) {
-//        try {
-//            //MyLogs.LOG("DataFormatConverter", "getObjFromJson", "json: " + json);
-//            return new Gson().fromJson(json, CloudDataObj.class);
-//
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//
-//        return null;
-//    }
+    public static CloudDataObj getObjFromJson(String json) {
+        try {
+            return new Gson().fromJson(json, CloudDataObj.class);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
+    }
 
     public static boolean isTrueStr(String isTrue) {
         return isTrue != null && isTrue.equals("1");
@@ -174,30 +175,30 @@ public class DataFormatConverter {
         DayWeatherObj dayWeatherObj = forecastObj.getForecastday()[0].getDay();
         float tempMin = dayWeatherObj.getMintemp_c();
         float tempMax = dayWeatherObj.getMaxtemp_c();
-        MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "heighDp: " + heighDp + "  tempMin: " + tempMin + " tempMax: " + tempMax + " curTemp: " + curTemp);
+        //MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "heighDp: " + heighDp + "  tempMin: " + tempMin + " tempMax: " + tempMax + " curTemp: " + curTemp);
 
         float calcVal;
         if (tempMin > 0 && tempMax > 0) {
             calcVal = Math.abs(tempMin) * heighDp / Math.abs(tempMax);
-            MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "1 - calcVal: " + calcVal);
+            //MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "1 - calcVal: " + calcVal);
 
         } else if (tempMin < 0 && tempMax < 0) {
             calcVal = Math.abs(tempMax) * heighDp / Math.abs(tempMin);
-            MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "2 - calcVal: " + calcVal);
+            //MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "2 - calcVal: " + calcVal);
 
         } else {
             float diff = Math.abs(tempMin) + Math.abs(tempMax);
-            MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "diff: " + diff);
+            //MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "diff: " + diff);
 
             if (curTemp > 0) {
                 float finalCompareVal = Math.abs(tempMin) + curTemp;
                 calcVal = (finalCompareVal * heighDp) / diff;
-                MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "3 - finalCompareVal: " + finalCompareVal + " calcVal: " + calcVal);
+                //MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "3 - finalCompareVal: " + finalCompareVal + " calcVal: " + calcVal);
 
             } else {
                 float finalCompareVal = Math.abs(tempMin) - Math.abs(curTemp);
                 calcVal = (Math.abs(finalCompareVal) * heighDp) / diff;
-                MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "4 - finalCompareVal: " + finalCompareVal + " calcVal: " + calcVal);
+                //MyLogs.LOG("DataFormatConverter", "getMinMaxTempDif", "4 - finalCompareVal: " + finalCompareVal + " calcVal: " + calcVal);
             }
         }
 
@@ -219,7 +220,7 @@ public class DataFormatConverter {
         if (addresses != null && addresses.size() > 0) {
             String locality = addresses.get(0).getLocality();
             String country = addresses.get(0).getCountryName();
-            MyLogs.LOG("DataFormatConverter", "hetLocationFromPalce", "locality: " + locality + " country: " + country);
+            //MyLogs.LOG("DataFormatConverter", "hetLocationFromPalce", "locality: " + locality + " country: " + country);
 
             LocationObj locationObj = new LocationObj();
             locationObj.setId(getMd5(locality + country));
@@ -260,7 +261,7 @@ public class DataFormatConverter {
     }
 
     public static RelativeLayout.LayoutParams getAudienceViewParams(int heightDpi) {
-        MyLogs.LOG("DataFormatConverter", "getAudienceViewParams", "heightDpi: " + heightDpi);
+        //MyLogs.LOG("DataFormatConverter", "getAudienceViewParams", "heightDpi: " + heightDpi);
 
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         float pxw = 20 * (metrics.densityDpi / 160f);

@@ -38,19 +38,9 @@
         <item name="android:textSize">@dimen/txt_large</item>
     </style>
 
-    <style name="TextViewSmall" parent="android:Widget.TextView">
-        <item name="android:textColor">@color/primary_text</item>
-        <item name="android:textSize">@dimen/txt_small</item>
-    </style>
-
-    <style name="TextViewXxLarge" parent="android:Widget.TextView">
-        <item name="android:textColor">@color/primary_text</item>
-        <item name="android:textSize">@dimen/txt_x_large</item>
-    </style>
-
     <style name="TextBox" parent="android:Widget.TextView">
         <item name="android:textColor">@color/primary_text</item>
-        <item name="android:textSize">@dimen/txt_medium</item>
+        <item name="android:textSize">@dimen/txt_medium_xs</item>
     </style>
 
     <style name="TextBoxS" parent="android:Widget.TextView">

@@ -6,14 +6,10 @@ import android.content.SharedPreferences;
 public class SharedPrefs {
 
     public static final String KEY_SHARED_PREFS = "my_shared_prefs";
-    public static final String KEY_FINISHED = "KEY_FINISHED";
-    public static final String KEY_LOCKED = "KEY_LOCKED";
     public static final String KEY_SP_APP_BUILDS = "KEY_SP_APP_BUILDS";
-    public static final String KEY_SP_IS_PAID_OLD_ADS = "KEY_SP_IS_USER_PRO";
     public static final String KEY_SP_IS_PAID_ADS = "KEY_SP_IS_PAID_ADS";
-    public static final String KEY_SP_IS_PAID_UNLOCK_LVLS = "KEY_SP_IS_PAID_UNLOCK_LVLS";
+    public static final String KEY_SP_IS_PAID_UNLOCK = "KEY_SP_IS_PAID_UNLOCK";
     public static final String KEY_SP_IS_PAID_FULL = "KEY_SP_IS_PAID_FULL";
-    public static final String KEY_SP_SELECTED_THEME = "KEY_SP_SELECTED_THEME";
 
 
     public static void setSharedPreferencesString(String key, String string) {

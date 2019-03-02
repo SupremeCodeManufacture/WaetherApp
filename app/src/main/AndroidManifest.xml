@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+
 
     <application
         android:name="data.App"
@@ -48,9 +50,23 @@
             android:name="view.activity.WebBrowserActivity"
             android:screenOrientation="portrait" />
 
+
+        <!--to ignore appache http errors on SDK 28+ from ads-->
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/key_maps" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/ads_app_id" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="5f861d73578ecc0d1579cc51acdf8e481ad36f57" />
 
     </application>
 

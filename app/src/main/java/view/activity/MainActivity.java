@@ -6,10 +6,14 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.soloviof.easyads.AdsRepo;
+import com.soloviof.easyads.InitApp;
+import com.soloviof.easyads.InterstitialAddsHelper;
 import com.squareup.picasso.Picasso;
 import com.supreme.manufacture.weather.R;
 import com.supreme.manufacture.weather.databinding.ActivityMainBinding;
@@ -35,14 +39,17 @@ import data.model.ForecastObj;
 import data.model.HourWeatherObj;
 import data.view_model.MainActivityViewModel;
 import logic.adapters.HoursWeatherAdapter;
+import logic.async_await.AsyncTaskWorker;
+import logic.async_await.CallableObj;
 import logic.async_await.OnAsyncDoneRsObjListener;
 import logic.helpers.DataFormatConverter;
-import logic.helpers.MyLogs;
 import logic.helpers.PermissionsHelper;
 import logic.helpers.ThemeColorsHelper;
 import logic.listeners.OnDualSelectionListener;
 import logic.listeners.OnFetchDataErrListener;
 import logic.network.RequestManager;
+import logic.payment.PaymentHelper;
+import logic.payment.util.IabResult;
 import view.custom.CustomDialogs;
 import view.custom.WrapLayoutManager;
 
@@ -62,7 +69,7 @@ public class MainActivity extends BaseActivity implements
         @Override
         public void onLocationChanged(Location location) {
             if (isActivityValid()) {
-                MyLogs.LOG("MainActivity", "mLocationListener", "location: " + location.toString());
+                //MyLogs.LOG("MainActivity", "mLocationListener", "location: " + location.toString());
                 onLoadLocationWeather("", location.getLatitude() + "," + location.getLongitude());
             }
 
@@ -103,6 +110,8 @@ public class MainActivity extends BaseActivity implements
 
         bindViewModel();
 
+        InitApp.doFirebaseInit(MainActivity.this, AdsRepo.getAppId(App.getAppCtx(), App.getAppBuilds(), App.getAppCtx().getResources().getString(R.string.ads_app_id)));
+
         if (App.getSelectedLoc() == null)
             CustomDialogs.createSimpleDialog(
                     MainActivity.this,
@@ -122,6 +131,28 @@ public class MainActivity extends BaseActivity implements
                             startActivityForResult(new Intent(MainActivity.this, PlacesActivity.class), NEW_LOC_SELECTION_CODE);
                         }
                     });
+
+        //init here to get status for further game activity
+        PaymentHelper.setUpPayments(MainActivity.this, MainActivity.this);
+
+        handleDemoOrProViews();
+    }
+
+
+    private void handleDemoOrProViews() {
+        if (App.isPaidFull() || App.isPaidUnlock()) {
+            mActivityBinding.zoneTodayHours.setVisibility(View.VISIBLE);
+
+        } else {
+            mActivityBinding.zoneTodayHours.setVisibility(View.GONE);
+        }
+
+        setupAdBanner(mActivityBinding.zoneBanner.llBanner, MainActivity.this, "home screen");
+
+        InterstitialAddsHelper.prepareInterstitialAds(
+                MainActivity.this,
+                App.getAppBuilds(),
+                App.getAppCtx().getResources().getString(R.string.banner_id_interstitial));
     }
 
     private void manageDayNightColors() {
@@ -144,12 +175,30 @@ public class MainActivity extends BaseActivity implements
         });
     }
 
-    private void onLoadData(DataRs dataRs) {
+    private void onLoadData(final DataRs dataRs) {
         mActivityBinding.tvToolbarPlace.setText(dataRs.getLocation().getName());
 
         loadCurWeather(dataRs.getCurrent());
 
-        loadTodaysHoursWeather(dataRs.getForecast());
+        if (App.isPaidFull() || App.isPaidUnlock()) {
+            new AsyncTaskWorker(
+                    new CallableObj<List<HourWeatherObj>>() {
+                        public List<HourWeatherObj> call() {
+                            return DataFormatConverter.getTodayHoursWeather(dataRs.getForecast());
+                        }
+                    },
+                    new OnAsyncDoneRsObjListener() {
+                        @Override
+                        public <T> void onDone(T t) {
+                            List<HourWeatherObj> list = t != null ? (List<HourWeatherObj>) t : null;
+                            loadTodaysHoursWeather(list);
+                        }
+                    }
+            ).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        } else {
+            mActivityBinding.zoneTodayHours.setVisibility(View.GONE);
+        }
 
         loadDaysWeather(dataRs.getForecast());
     }
@@ -185,9 +234,7 @@ public class MainActivity extends BaseActivity implements
 
     }
 
-    private void loadTodaysHoursWeather(ForecastObj forecastObj) {
-        List<HourWeatherObj> list = DataFormatConverter.getTodayHoursWeather(forecastObj); // TODO: 24/02/2019  async
-
+    private void loadTodaysHoursWeather(List<HourWeatherObj> list) {
         if (list != null && list.size() > 0) {
             mActivityBinding.zoneTodayHours.setVisibility(View.VISIBLE);
 
@@ -287,6 +334,7 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -334,6 +382,9 @@ public class MainActivity extends BaseActivity implements
 
             if (name != null && coord != null)
                 onLoadLocationWeather(name, coord);
+
+            if (!App.isPaidFull() && !App.isPaidAds())
+                InterstitialAddsHelper.tryShowInterstitialAdNow(true);
         }
     }
 
@@ -353,6 +404,27 @@ public class MainActivity extends BaseActivity implements
                         null,
                         null);
             }
+        }
+    }
+
+
+    @Override
+    void decideDemoOrPro() {
+        handleDemoOrProViews();
+
+        //reload to get hourly
+        if (App.getSelectedLoc() != null) onLoadLocationWeather("", App.getSelectedLoc());
+    }
+
+    //=============================== PAYMENTS FUNCTIONAL ========================================//
+    @Override
+    public void onIabSetupFinished(IabResult result) {
+        if (result.isSuccess()) {
+            //MyLogs.LOG("MainActivity", "onIabSetupFinished", "Setting up In-app Billing succesfull");
+            PaymentHelper.getLifePaymentStatus(App.getPaymentHelper(), MainActivity.this);
+
+        } else {
+            //MyLogs.LOG("MainActivity", "onIabSetupFinished", "Problem setting up In-app Billing: " + result);
         }
     }
 }

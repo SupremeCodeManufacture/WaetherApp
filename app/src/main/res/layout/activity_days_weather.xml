@@ -42,6 +42,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:layout_toEndOf="@+id/btn_back"
                         android:text="@string/txt_next_days" />
 
@@ -60,11 +62,24 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvItems"
                 android:layout_width="match_parent"
+                android:layout_above="@+id/holder_banner"
                 android:layout_height="match_parent" />
 
             <include
                 android:id="@+id/no_content"
                 layout="@layout/view_no_weather" />
+
+            <FrameLayout
+                android:id="@+id/holder_banner"
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_height="wrap_content">
+
+                <include
+                    android:id="@+id/zone_banner"
+                    layout="@layout/banner_placeholder" />
+
+            </FrameLayout>
 
         </RelativeLayout>
 

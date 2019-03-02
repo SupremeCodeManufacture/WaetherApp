@@ -32,13 +32,13 @@ public class RequestManager {
                 @Override
                 public void onResponse(Call<DataRs> call, final Response<DataRs> response) {
                     if (response.isSuccessful()) {
-                        MyLogs.LOG("RequestManager", "execAsyncReq", "isSuccessful");
+                        //MyLogs.LOG("RequestManager", "execAsyncReq", "isSuccessful");
 
                         if (onDoneListener != null)
                             onDoneListener.onDone(response.body());
 
                     } else {
-                        MyLogs.LOG("RequestManager", "execAsyncReq", "onResponse --> ERROR not succesfull result");
+                        //MyLogs.LOG("RequestManager", "execAsyncReq", "onResponse --> ERROR not succesfull result");
                         if (errListener != null)
                             errListener.onErrNptify(ErrorHandler.getErrMsgFromRs(response));
                     }
@@ -46,7 +46,7 @@ public class RequestManager {
 
                 @Override
                 public void onFailure(Call<DataRs> call, Throwable t) {
-                    MyLogs.LOG("RequestManager", "execAsyncReq", "onFailure --> ERROR: " + t.getMessage());
+                    //MyLogs.LOG("RequestManager", "execAsyncReq", "onFailure --> ERROR: " + t.getMessage());
                     t.printStackTrace();
                     if (errListener != null)
                         errListener.onErrNptify(ErrorHandler.getFriendlyError(t));
@@ -54,7 +54,7 @@ public class RequestManager {
             });
 
         } else {
-            MyLogs.LOG("RequestManager", "execAsyncReq", "onFailure --> WARNING no connection");
+            //MyLogs.LOG("RequestManager", "execAsyncReq", "onFailure --> WARNING no connection");
             if (errListener != null)
                 errListener.onErrNptify(App.getAppCtx().getResources().getString(R.string.txt_err_no_network));
         }
@@ -71,11 +71,11 @@ public class RequestManager {
                 Response<DataRs> response = call.execute();
 
                 if (response != null && response.body() != null && response.isSuccessful()) {
-                    MyLogs.LOG("RequestManager", "syncGetCurWeather", "onResponse --> code: " + response.code());
+                    //MyLogs.LOG("RequestManager", "syncGetCurWeather", "onResponse --> code: " + response.code());
                     return response.body();
 
                 } else {
-                    MyLogs.LOG("RequestManager", "syncGetCurWeather", "onFailure --> ERROR something wrong with result");
+                    //MyLogs.LOG("RequestManager", "syncGetCurWeather", "onFailure --> ERROR something wrong with result");
                 }
 
             } catch (IOException e) {

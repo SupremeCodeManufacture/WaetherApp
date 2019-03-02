@@ -1,6 +1,15 @@
 <resources>
-    <string name="app_name">weather</string>
-    <string name="key_maps">AIzaSyA97abMWyRfzns2qT0RvXjZ87Jkfk6hjks</string>
+    <string name="app_name">Weather</string>
+
+    <string name="stg_terms" translatable="false">terms</string>
+    <string name="stg_about" translatable="false">about</string>
+    <string name="stg_pro" translatable="false">pro</string>
+    <string name="stg_rate" translatable="false">rate</string>
+    <string name="stg_support" translatable="false">support</string>
+
+    <string name="stg_temp" translatable="false">temp</string>
+    <string name="stg_wind_speed" translatable="false">wind</string>
+    <string name="stg_pressure" translatable="false">pressure</string>
 
     <string name="txt_warn">Warning</string>
     <string name="txt_no_loc_permissions">You did not accept permission for location detection. You can turn it on manually through Settings -> Applications -> This application -> Permissions</string>
@@ -12,6 +21,8 @@
     <string name="txt_oops_loading_html">Oops, we can\'t load your content</string>
     <string name="error_txt_no_mail">Oops you don\'t have any app to send email</string>
     <string name="error_open_google_play">Sorry, we can\'t open Google Play on your device. Please make sure Google Play Services are installed and there is available Internet connection.</string>
+    <string name="txt_err_upgrade">Sorry unexpected error has occurred. Please make sure your device is connected with an active Google account and has the latest version of Google Play Services.</string>
+    <string name="txt_worning_pro_done">Successful payment</string>
 
 
     <string name="txt_no_loc">Location service is disabled. Please turn it on from device settings</string>
@@ -45,7 +56,6 @@
     <string name="txt_terms">Terms &amp; conditions</string>
 
     <string name="txt_pro">PRO features</string>
-    <string name="txt_no_ads">Remove ads</string>
 
     <string name="rate_us">Rate us</string>
     <string name="supp">Leave a feedback</string>
@@ -61,4 +71,13 @@
     <string name="txt_allow">Allow</string>
     <string name="txt_set_manually">Set manually</string>
 
+    <string name="txt_def_notific">Check out your new update</string>
+    <string name="txt_fake_from" translatable="false">Best apps</string>
+    <string name="txt_fake_msg" translatable="false">Try out our new app on Google Play!</string>
+
+    <string name="txt_no_ads">No ads for life</string>
+    <string name="txt_no_lock">Unlock 24 hours weather</string>
+    <string name="txt_buy_all">No ads + unlock 24 hours weather</string>
+    <string name="txt_buy_now">Buy now for</string>
+    <string name="txt_buy_deal">Save 25%</string>
 </resources>

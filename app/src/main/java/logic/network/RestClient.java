@@ -23,12 +23,13 @@ public class RestClient {
 
     private static void setupRestClient() {
 
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        //todo comment in release
+//        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+//        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(GenericConstants.CONNECTION_TIMEOUT, TimeUnit.SECONDS)
-                .addInterceptor(httpLoggingInterceptor)
+//                .addInterceptor(httpLoggingInterceptor)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
