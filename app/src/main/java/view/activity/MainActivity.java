@@ -284,7 +284,7 @@ public class MainActivity extends BaseActivity implements
                     .into(mActivityBinding.ivMmodTomorrow);
 
 
-            String afterTomWeekDay = new SimpleDateFormat("EE", Locale.ENGLISH).format(forecastdays[2].getDate_epoch() * 1000);
+            String afterTomWeekDay = DataFormatConverter.getPrettyWeekDay(forecastdays[2].getDate());
             String afterTomorrowMood = afterTomWeekDay + " • " + forecastdays[2].getDay().getCondition().getText();
             mActivityBinding.tvMoodAftTomorrow.setText(afterTomorrowMood);
 

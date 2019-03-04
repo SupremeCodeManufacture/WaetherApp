@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="temp_messures_names">
+        <item>Градусы Цельсия</item>
+        <item>Градусы Фаренгейта</item>
+    </string-array>
+
+    <string-array name="wind_messures_names">
+        <item>Километров в час</item>
+        <item>Миль в час</item>
+    </string-array>
+
+    <string-array name="press_messures_names">
+        <item>Миллибары</item>
+        <item>дюймов Меркурия</item>
+    </string-array>
+
+</resources>

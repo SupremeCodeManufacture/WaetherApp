@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="temp_messures_names">
+    <string-array name="temp_messures_names" >
         <item>Celsius degrees</item>
         <item>Fahrenheit degrees</item>
     </string-array>
 
-    <string-array name="temp_messures_values">
+    <string-array name="temp_messures_values" translatable="false">
         <item>°C</item>
         <item>°F</item>
     </string-array>
@@ -16,7 +16,7 @@
         <item>Miles per hour</item>
     </string-array>
 
-    <string-array name="wind_messures_values">
+    <string-array name="wind_messures_values" translatable="false">
         <item>kph</item>
         <item>mph</item>
     </string-array>
@@ -26,7 +26,7 @@
         <item>Inches of Mercury</item>
     </string-array>
 
-    <string-array name="press_messures_values">
+    <string-array name="press_messures_values" translatable="false">
         <item>mb</item>
         <item>in</item>
     </string-array>

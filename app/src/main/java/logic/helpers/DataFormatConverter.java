@@ -298,4 +298,25 @@ public class DataFormatConverter {
 
         return null;
     }
+
+
+    public static String getCityName(double latitude, double longitude) {
+        Geocoder gcd = new Geocoder(App.getAppCtx(), Locale.getDefault());
+        List<Address> addresses = null;
+        try {
+            addresses = gcd.getFromLocation(latitude, longitude, 1);
+            if (addresses.size() > 0) {
+               //MyLogs.LOG("adas", "sdfsdf", " ==> " + addresses.get(0).getLocality() + " --> " +Locale.getDefault().getCountry());
+
+            } else {
+                //MyLogs.LOG("adas", "sdfsdf", " ==> sula");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
+    }
 }
