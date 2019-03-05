@@ -18,9 +18,7 @@ import com.squareup.picasso.Picasso;
 import com.supreme.manufacture.weather.R;
 import com.supreme.manufacture.weather.databinding.ActivityMainBinding;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -383,7 +381,7 @@ public class MainActivity extends BaseActivity implements
             if (name != null && coord != null)
                 onLoadLocationWeather(name, coord);
 
-            if (!App.isPaidFull() && !App.isPaidAds())
+            if (DataFormatConverter.isPassedAdsFree() && !App.isPaidFull() && !App.isPaidAds())
                 InterstitialAddsHelper.tryShowInterstitialAdNow(true);
         }
     }

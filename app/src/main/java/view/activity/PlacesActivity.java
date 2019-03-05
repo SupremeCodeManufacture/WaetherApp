@@ -235,7 +235,7 @@ public class PlacesActivity extends BaseActivity implements
         if (resultCode == RESULT_OK && requestCode == PLACE_PICKER_REQUEST) {
             asyncAddLocation(PlacePicker.getPlace(this, data));
 
-            if (!App.isPaidFull() && !App.isPaidAds())
+            if (DataFormatConverter.isPassedAdsFree() && !App.isPaidFull() && !App.isPaidAds())
                 InterstitialAddsHelper.tryShowInterstitialAdNow(true);
         }
     }

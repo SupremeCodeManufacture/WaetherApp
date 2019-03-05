@@ -2,15 +2,14 @@ package view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
-import androidx.appcompat.app.AppCompatActivity;
-import io.fabric.sdk.android.Fabric;
 import java.util.Calendar;
 
+import androidx.appcompat.app.AppCompatActivity;
 import data.App;
+import io.fabric.sdk.android.Fabric;
 import logic.helpers.LangUtils;
 
 public class SplashActivity extends AppCompatActivity {
@@ -24,6 +23,9 @@ public class SplashActivity extends AppCompatActivity {
         LangUtils.changeAppLangForUser();
 
         detectDayNight();
+
+        if (App.getFirstLaunchMilis() == 0)
+            App.setFirstLaunchMilis(System.currentTimeMillis());
 
         goToNextAtivity();
     }

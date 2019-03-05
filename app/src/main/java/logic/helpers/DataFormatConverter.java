@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Locale;
 
 import data.App;
+import data.GenericConstants;
 import data.model.DayWeatherObj;
 import data.model.ForecastObj;
 import data.model.HourWeatherObj;
@@ -299,6 +300,10 @@ public class DataFormatConverter {
         return null;
     }
 
+    public static boolean isPassedAdsFree() {
+        return System.currentTimeMillis() > (App.getFirstLaunchMilis() + GenericConstants.THREE_DAYS_IN_MILIS);
+    }
+
 
     public static String getCityName(double latitude, double longitude) {
         Geocoder gcd = new Geocoder(App.getAppCtx(), Locale.getDefault());
@@ -306,7 +311,7 @@ public class DataFormatConverter {
         try {
             addresses = gcd.getFromLocation(latitude, longitude, 1);
             if (addresses.size() > 0) {
-               //MyLogs.LOG("adas", "sdfsdf", " ==> " + addresses.get(0).getLocality() + " --> " +Locale.getDefault().getCountry());
+                //MyLogs.LOG("adas", "sdfsdf", " ==> " + addresses.get(0).getLocality() + " --> " +Locale.getDefault().getCountry());
 
             } else {
                 //MyLogs.LOG("adas", "sdfsdf", " ==> sula");

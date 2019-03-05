@@ -1,6 +1,5 @@
 package data;
 
-import android.app.Application;
 import android.content.Context;
 
 import androidx.multidex.MultiDexApplication;
@@ -17,6 +16,8 @@ public class App extends MultiDexApplication {
     public static boolean PAID_FULL;
     public static boolean PAID_ADS;
     public static boolean PAID_UNLOCK;
+    public static long FIRST_LAUNCH_MILIS;
+
 
     @Override
     public void onCreate() {
@@ -98,5 +99,14 @@ public class App extends MultiDexApplication {
     public static void setPaidUnlock(boolean paidUnlock) {
         PAID_UNLOCK = paidUnlock;
         SharedPrefs.setSharedPreferencesBool(SharedPrefs.KEY_SP_IS_PAID_UNLOCK, paidUnlock);
+    }
+
+    public static long getFirstLaunchMilis() {
+        return FIRST_LAUNCH_MILIS != 0 ? FIRST_LAUNCH_MILIS : SharedPrefs.getSharedPreferencesLong(SharedPrefs.KEY_FIRST_LAUNCH, 0);
+    }
+
+    public static void setFirstLaunchMilis(long firstLaunchMilis) {
+        FIRST_LAUNCH_MILIS = firstLaunchMilis;
+        SharedPrefs.setSharedPreferencesLong(SharedPrefs.KEY_FIRST_LAUNCH, firstLaunchMilis);
     }
 }

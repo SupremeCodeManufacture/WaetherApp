@@ -20,10 +20,10 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.widget.ContentLoadingProgressBar;
 import data.App;
 import data.GenericConstants;
+import logic.helpers.DataFormatConverter;
 import logic.helpers.LangUtils;
 import logic.helpers.LocationUtils;
 import logic.helpers.MyContextWrapper;
-import logic.helpers.MyLogs;
 import logic.listeners.OnDualSelectionListener;
 import logic.listeners.OnPayListener;
 import logic.payment.PaymentHelper;
@@ -131,7 +131,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     protected void setupAdBanner(LinearLayout bannerHolder, Activity activityRef, String bannerName) {
-        if (!App.isPaidFull() && !App.isPaidAds()) {
+        if (DataFormatConverter.isPassedAdsFree() && !App.isPaidFull() && !App.isPaidAds()) {
             bannerHolder.setVisibility(View.VISIBLE);
 
             CustomizeAds.setupAddBanner(

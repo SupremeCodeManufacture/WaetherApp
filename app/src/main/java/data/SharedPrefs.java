@@ -10,6 +10,7 @@ public class SharedPrefs {
     public static final String KEY_SP_IS_PAID_ADS = "KEY_SP_IS_PAID_ADS";
     public static final String KEY_SP_IS_PAID_UNLOCK = "KEY_SP_IS_PAID_UNLOCK";
     public static final String KEY_SP_IS_PAID_FULL = "KEY_SP_IS_PAID_FULL";
+    public static final String KEY_FIRST_LAUNCH = "KEY_FIRST_LAUNCH";
 
 
     public static void setSharedPreferencesString(String key, String string) {
