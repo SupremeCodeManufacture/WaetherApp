@@ -68,7 +68,7 @@ public class MainActivity extends BaseActivity implements
         public void onLocationChanged(Location location) {
             if (isActivityValid()) {
                 //MyLogs.LOG("MainActivity", "mLocationListener", "location: " + location.toString());
-                onLoadLocationWeather("", location.getLatitude() + "," + location.getLongitude());
+                onLoadLocationWeather(location.getLatitude() + "," + location.getLongitude());
             }
 
             mLocationManager.removeUpdates(mLocationListener);
@@ -95,7 +95,7 @@ public class MainActivity extends BaseActivity implements
         super.onResume();
 
         //if no selected or prevously loaded city then try to auto detect location
-        if (App.getSelectedLoc() != null) onLoadLocationWeather("", App.getSelectedLoc());
+        if (App.getSelectedLoc() != null) onLoadLocationWeather(App.getSelectedLoc());
     }
 
     @Override
@@ -174,7 +174,8 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void onLoadData(final DataRs dataRs) {
-        mActivityBinding.tvToolbarPlace.setText(dataRs.getLocation().getName());
+        String loc = DataFormatConverter.getCityName(dataRs.getLocation().getLat() + "," + dataRs.getLocation().getLon());
+        mActivityBinding.tvToolbarPlace.setText(loc);
 
         loadCurWeather(dataRs.getCurrent());
 
@@ -300,10 +301,12 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    private void onLoadLocationWeather(String locName, String locQuery) {
-        mActivityBinding.tvToolbarPlace.setText(locName);
+    private void onLoadLocationWeather(String locQuery) {
         mCoordQuery = locQuery;
         App.setSelectedLoc(locQuery);
+
+        String loc = DataFormatConverter.getCityName(locQuery);
+        mActivityBinding.tvToolbarPlace.setText(loc);
 
         onProgressShow(mActivityBinding.progressBar);
         RequestManager.asyncGetForecastWeather(locQuery, "3", MainActivity.this, MainActivity.this);
@@ -324,7 +327,7 @@ public class MainActivity extends BaseActivity implements
             LatLng myCurLoc = DataFormatConverter.getMyLocation();
 
             if (myCurLoc != null) {
-                onLoadLocationWeather("", myCurLoc.latitude + "," + myCurLoc.longitude);
+                onLoadLocationWeather(myCurLoc.latitude + "," + myCurLoc.longitude);
 
             } else {
                 mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, mLocationListener);
@@ -336,13 +339,6 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_details:
-                Intent intentAbout = new Intent(MainActivity.this, WebBrowserActivity.class);
-                intentAbout.putExtra(GenericConstants.KEY_EXTRA_BROWSER_TITLE, App.getAppCtx().getResources().getString(R.string.txt_det_weather));
-                intentAbout.putExtra(GenericConstants.KEY_EXTRA_BROWSER_LINK, "https://www.apixu.com/weather/");
-                startActivity(intentAbout);
-                break;
-
             case R.id.tv_next_days:
                 Intent intent = new Intent(MainActivity.this, WeatherDetailsActivity.class);
                 intent.putExtra(GenericConstants.KEY_EXTRA_LOC_COORDONATES, mCoordQuery);
@@ -378,8 +374,8 @@ public class MainActivity extends BaseActivity implements
             String name = data.getStringExtra(GenericConstants.KEY_EXTRA_LOC_NAME);
             String coord = data.getStringExtra(GenericConstants.KEY_EXTRA_LOC_COORDONATES);
 
-            if (name != null && coord != null)
-                onLoadLocationWeather(name, coord);
+            if (coord != null)
+                onLoadLocationWeather(coord);
 
             if (DataFormatConverter.isPassedAdsFree() && !App.isPaidFull() && !App.isPaidAds())
                 InterstitialAddsHelper.tryShowInterstitialAdNow(true);
@@ -411,7 +407,7 @@ public class MainActivity extends BaseActivity implements
         handleDemoOrProViews();
 
         //reload to get hourly
-        if (App.getSelectedLoc() != null) onLoadLocationWeather("", App.getSelectedLoc());
+        if (App.getSelectedLoc() != null) onLoadLocationWeather( App.getSelectedLoc());
     }
 
     //=============================== PAYMENTS FUNCTIONAL ========================================//

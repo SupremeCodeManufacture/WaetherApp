@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Weather</string>
+    <string name="app_terms_link">https://onedrive.live.com/view.aspx?resid=D27DD8466775BA4B!389843&amp;ithint=file%2cdocx&amp;authkey=!ANTqau6gwwRDTHk</string>
 
     <string name="stg_terms" translatable="false">terms</string>
     <string name="stg_about" translatable="false">about</string>
@@ -80,4 +81,11 @@
     <string name="txt_buy_all">No ads + unlock 24 hours weather</string>
     <string name="txt_buy_now">Buy now for</string>
     <string name="txt_buy_deal">Save 25%</string>
+
+    <string name="txt_price_int_ads">$1</string>
+    <string name="txt_price_float_ads">99</string>
+    <string name="txt_price_int_full">$1</string>
+    <string name="txt_price_float_full">99</string>
+    <string name="txt_price_end_cur"></string>
+
 </resources>

@@ -1,5 +1,6 @@
 package view.activity;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
@@ -45,7 +46,9 @@ public class WebBrowserActivity extends BaseActivity implements View.OnClickList
     }
 
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void setupClient() {
+        mActivityBinding.web.getSettings().setJavaScriptEnabled(true);
         mActivityBinding.web.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {

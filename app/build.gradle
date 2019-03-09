@@ -22,18 +22,34 @@ android {
         applicationId "com.supreme.manufacture.weather"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 103
-        versionName "1.03"
+        versionCode 104
+        versionName "1.04"
 
         multiDexEnabled true
 
         resValue "string", "google_maps_key", (project.findProperty("GOOGLE_MAPS_API_KEY") ?: "")
     }
 
+    signingConfigs {
+        release {
+            try {
+                keyAlias KEY_BUILDS_PASS
+                keyPassword KEY_BUILDS_PASS
+                storeFile file('weather.jks')
+                storePassword KEY_BUILDS_PASS
+            }
+
+            catch (ex) {
+                throw new InvalidUserDataException("Forgot to define KEY_BUILDS_PASS in gradle.properties?")
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 

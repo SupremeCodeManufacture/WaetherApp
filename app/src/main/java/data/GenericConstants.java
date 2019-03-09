@@ -5,7 +5,6 @@ public class GenericConstants {
     public static final int CONNECTION_TIMEOUT = 30;
     public static String SUPPORT_EMAIL = "support@suprememanufacture.com";
     public static final String SERVER_DEF_ENDPOINT = "http://api.apixu.com/v1/";
-    public static final String TERMS_LINK = "https://onedrive.live.com/view.aspx?resid=D27DD8466775BA4B!389313&ithint=file%2cdocx&app=Word&authkey=!AKpTBfcvOKvKEr4";
     public static final int KEY_IN_APP_RESPONSE_CODE = 123;
     public static final long THREE_DAYS_IN_MILIS = 259200000L;
 

@@ -13,7 +13,7 @@
 
     <string-array name="press_messures_names">
         <item>Миллибары</item>
-        <item>дюймов Меркурия</item>
+        <item>Дюймы ртутного столба</item>
     </string-array>
 
 </resources>

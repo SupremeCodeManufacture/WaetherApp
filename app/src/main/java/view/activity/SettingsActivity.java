@@ -105,9 +105,11 @@ public class SettingsActivity extends BaseActivity {
                 }
 
             } else if (keyRes.equals(SETTING_TERMS)) {
+                String termsLink = App.getAppCtx().getResources().getString(R.string.app_terms_link);
+
                 Intent intentAbout = new Intent(getActivity(), WebBrowserActivity.class);
                 intentAbout.putExtra(GenericConstants.KEY_EXTRA_BROWSER_TITLE, App.getAppCtx().getResources().getString(R.string.txt_terms));
-                intentAbout.putExtra(GenericConstants.KEY_EXTRA_BROWSER_LINK, GenericConstants.TERMS_LINK);
+                intentAbout.putExtra(GenericConstants.KEY_EXTRA_BROWSER_LINK, termsLink);
                 startActivity(intentAbout);
 
             } else if (keyRes.equals(SETTING_ABOUT)) {

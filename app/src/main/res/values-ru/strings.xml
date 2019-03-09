@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Погода</string>
+    <string name="app_terms_link">https://onedrive.live.com/view.aspx?resid=D27DD8466775BA4B!389844&amp;ithint=file%2cdocx&amp;authkey=!ABv7NHKvqk4PIyo</string>
 
     <string name="txt_warn">Предупреждение</string>
     <string name="txt_no_loc_permissions">Вы не приняли разрешение на определение местоположения. Вы можете включить его вручную через Настройки -> Приложения -> Это приложение -> Разрешения</string>
@@ -68,4 +69,12 @@
     <string name="txt_buy_all">Нет рекламы + разблокировать 24 часа погоды</string>
     <string name="txt_buy_now">Купить сейчас за</string>
     <string name="txt_buy_deal">Сэкономьте 25%</string>
+
+
+    <string name="txt_price_int_ads">129</string>
+    <string name="txt_price_float_ads">00</string>
+    <string name="txt_price_int_full">199</string>
+    <string name="txt_price_float_full">00</string>
+    <string name="txt_price_end_cur">₽</string>
+
 </resources>

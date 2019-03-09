@@ -24,6 +24,7 @@ import logic.helpers.DataFormatConverter;
 import logic.helpers.LangUtils;
 import logic.helpers.LocationUtils;
 import logic.helpers.MyContextWrapper;
+import logic.helpers.MyLogs;
 import logic.listeners.OnDualSelectionListener;
 import logic.listeners.OnPayListener;
 import logic.payment.PaymentHelper;
@@ -31,6 +32,7 @@ import logic.payment.util.IabHelper;
 import logic.payment.util.IabResult;
 import logic.payment.util.Inventory;
 import logic.payment.util.Purchase;
+import logic.payment.util.SkuDetails;
 import view.custom.CustomDialogs;
 import view.custom.UpgradeDialog;
 

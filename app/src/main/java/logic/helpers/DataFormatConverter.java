@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.core.util.Pair;
 import data.App;
 import data.GenericConstants;
 import data.model.DayWeatherObj;
@@ -305,23 +306,42 @@ public class DataFormatConverter {
     }
 
 
-    public static String getCityName(double latitude, double longitude) {
-        Geocoder gcd = new Geocoder(App.getAppCtx(), Locale.getDefault());
-        List<Address> addresses = null;
+    public static Pair<Double, Double> getLatLon(String locCoord) {
         try {
-            addresses = gcd.getFromLocation(latitude, longitude, 1);
-            if (addresses.size() > 0) {
-                //MyLogs.LOG("adas", "sdfsdf", " ==> " + addresses.get(0).getLocality() + " --> " +Locale.getDefault().getCountry());
+            String[] arr = locCoord.split(",");
 
-            } else {
-                //MyLogs.LOG("adas", "sdfsdf", " ==> sula");
-            }
+            return new Pair<>(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]));
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-
         return null;
+    }
+
+
+    public static String getCityName(String locQuery) {
+        Pair<Double, Double> pair = getLatLon(locQuery);
+        if (pair != null) {
+
+            try {
+                double latitude = pair.first;
+                double longitude = pair.second;
+                Geocoder geocoder = new Geocoder(App.getAppCtx(), Locale.getDefault());
+
+                List<Address> addressList = geocoder.getFromLocation(latitude, longitude, 1);
+                if (addressList.size() > 0) {
+                    Address address = addressList.get(0);
+                    //MyLogs.LOG("adas", "sdfsdf", " ==> " + new Gson().toJson(address));
+
+                    return !Strings.isEmptyOrWhitespace(address.getSubAdminArea()) ? address.getSubAdminArea() : address.getAdminArea();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return "";
     }
 }

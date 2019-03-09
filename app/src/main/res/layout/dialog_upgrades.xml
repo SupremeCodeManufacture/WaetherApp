@@ -39,29 +39,39 @@
                 android:id="@+id/tv_001"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/tv_price_int"
+                android:layout_alignBaseline="@+id/tv_price_int_no_ads"
                 android:text="@string/txt_buy_now"
                 android:textColor="@color/white"
                 android:textSize="@dimen/txt_small" />
 
             <TextView
-                android:id="@+id/tv_price_int"
+                android:id="@+id/tv_price_int_no_ads"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@+id/tv_001"
-                android:text="$1"
+                android:text="@string/txt_price_int_ads"
                 android:textColor="@color/white"
                 android:textSize="@dimen/txt_medium_xs" />
 
             <TextView
+                android:id="@+id/tv_price_float_no_ads"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
-                android:layout_toEndOf="@+id/tv_price_int"
-                android:text="99"
+                android:layout_toEndOf="@+id/tv_price_int_no_ads"
+                android:text="@string/txt_price_float_ads"
                 android:textColor="@color/white"
                 android:textSize="@dimen/txt_x_small" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/material_s_half"
+                android:layout_toEndOf="@+id/tv_price_float_no_ads"
+                android:text="@string/txt_price_end_cur"
+                android:textColor="@color/white"
+                android:textSize="@dimen/txt_medium_xs" />
 
         </RelativeLayout>
 
@@ -100,29 +110,39 @@
                 android:id="@+id/tv_0011"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/tv_price_int1"
+                android:layout_alignBaseline="@+id/tv_price_int_unlock"
                 android:text="@string/txt_buy_now"
                 android:textColor="@color/white"
                 android:textSize="@dimen/txt_small" />
 
             <TextView
-                android:id="@+id/tv_price_int1"
+                android:id="@+id/tv_price_int_unlock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@+id/tv_0011"
-                android:text="$1"
+                android:text="@string/txt_price_int_ads"
                 android:textColor="@color/white"
                 android:textSize="@dimen/txt_medium_xs" />
 
             <TextView
+                android:id="@+id/tv_price_float_unlock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
-                android:layout_toEndOf="@+id/tv_price_int1"
-                android:text="99"
+                android:layout_toEndOf="@+id/tv_price_int_unlock"
+                android:text="@string/txt_price_float_ads"
                 android:textColor="@color/white"
                 android:textSize="@dimen/txt_x_small" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/material_s_half"
+                android:layout_toEndOf="@+id/tv_price_float_unlock"
+                android:text="@string/txt_price_end_cur"
+                android:textColor="@color/white"
+                android:textSize="@dimen/txt_medium_xs" />
 
         </RelativeLayout>
 
@@ -170,32 +190,44 @@
                 android:id="@+id/tv_00111"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/tv_price_int11"
+                android:layout_alignBaseline="@+id/tv_price_int_full"
                 android:text="@string/txt_buy_now"
                 android:textColor="@color/white"
                 android:textSize="@dimen/txt_small" />
 
             <TextView
-                android:id="@+id/tv_price_int11"
+                android:id="@+id/tv_price_int_full"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_111"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/material_half"
                 android:layout_toEndOf="@+id/tv_00111"
-                android:text="$2"
+                android:text="@string/txt_price_int_full"
                 android:textColor="@color/white"
                 android:textSize="@dimen/txt_medium_xs" />
 
             <TextView
+                android:id="@+id/tv_price_float_full"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tv_price_int11"
+                android:layout_alignTop="@+id/tv_price_int_full"
                 android:layout_marginStart="3dp"
-                android:layout_toEndOf="@+id/tv_price_int11"
-                android:text="99"
+                android:layout_toEndOf="@+id/tv_price_int_full"
+                android:text="@string/txt_price_float_full"
                 android:textColor="@color/white"
                 android:textSize="@dimen/txt_x_small" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_alignBaseline="@+id/tv_price_int_full"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/material_s_half"
+                android:layout_toEndOf="@+id/tv_price_float_full"
+                android:text="@string/txt_price_end_cur"
+                android:textColor="@color/white"
+                android:textSize="@dimen/txt_medium_xs" />
+
 
         </RelativeLayout>
 

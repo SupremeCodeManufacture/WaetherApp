@@ -49,6 +49,18 @@ public class SharedPrefs {
     }
 
     //-----------------------
+    public static void setSharedPreferencesFloat(String key, float number) {
+        SharedPreferences.Editor editor = App.getAppCtx().getSharedPreferences(KEY_SHARED_PREFS, Context.MODE_PRIVATE).edit();
+        editor.putFloat(key, number);
+        editor.apply();
+    }
+
+    public static float getSharedPreferencesFloat(String key, float defaultValue) {
+        SharedPreferences preferences = App.getAppCtx().getSharedPreferences(KEY_SHARED_PREFS, Context.MODE_PRIVATE);
+        return preferences.getFloat(key, defaultValue);
+    }
+
+    //-----------------------
     public static void setSharedPreferencesBool(String key, boolean value) {
         SharedPreferences.Editor editor = App.getAppCtx().getSharedPreferences(KEY_SHARED_PREFS, Context.MODE_PRIVATE).edit();
         editor.putBoolean(key, value);
