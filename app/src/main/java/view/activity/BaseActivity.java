@@ -133,7 +133,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     protected void setupAdBanner(LinearLayout bannerHolder, Activity activityRef, String bannerName) {
-        if (DataFormatConverter.isPassedAdsFree() && !App.isPaidFull() && !App.isPaidAds()) {
+        if (App.getAppBuilds() > 2 && !App.isPaidFull() && !App.isPaidAds()) {
             bannerHolder.setVisibility(View.VISIBLE);
 
             CustomizeAds.setupAddBanner(

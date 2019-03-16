@@ -22,8 +22,8 @@ android {
         applicationId "com.supreme.manufacture.weather"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 104
-        versionName "1.04"
+        versionCode 105
+        versionName "1.05"
 
         multiDexEnabled true
 
@@ -61,7 +61,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
-    implementation 'android.arch.work:work-runtime:1.0.0-rc02'
+    implementation 'android.arch.work:work-runtime:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
 
     implementation 'com.android.support:recyclerview-v7:28.0.0'

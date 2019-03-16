@@ -6,7 +6,7 @@ public class GenericConstants {
     public static String SUPPORT_EMAIL = "support@suprememanufacture.com";
     public static final String SERVER_DEF_ENDPOINT = "http://api.apixu.com/v1/";
     public static final int KEY_IN_APP_RESPONSE_CODE = 123;
-    public static final long THREE_DAYS_IN_MILIS = 259200000L;
+    public static final long TWO_DAYS_IN_MILIS = 172800000L;
 
     public static final String KEY_IN_APP_NO_ADS_SKU_ID = "no_ads";
     public static final String KEY_IN_APP_NO_LOCK_SKU_ID = "unlock_hourly";
