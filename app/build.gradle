@@ -22,8 +22,8 @@ android {
         applicationId "com.supreme.manufacture.weather"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 105
-        versionName "1.05"
+        versionCode 107
+        versionName "1.07"
 
         multiDexEnabled true
 
