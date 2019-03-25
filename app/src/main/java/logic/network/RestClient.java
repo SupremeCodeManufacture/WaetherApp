@@ -1,5 +1,7 @@
 package logic.network;
 
+import com.supreme.manufacture.weather.BuildConfig;
+
 import java.util.concurrent.TimeUnit;
 
 import data.GenericConstants;
@@ -22,15 +24,22 @@ public class RestClient {
     }
 
     private static void setupRestClient() {
+        OkHttpClient okHttpClient;
 
-        //todo comment in release
-//        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-//        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(GenericConstants.CONNECTION_TIMEOUT, TimeUnit.SECONDS)
-//                .addInterceptor(httpLoggingInterceptor)
-                .build();
+            okHttpClient = new OkHttpClient.Builder()
+                    .connectTimeout(GenericConstants.CONNECTION_TIMEOUT, TimeUnit.SECONDS)
+                    .addInterceptor(httpLoggingInterceptor)
+                    .build();
+
+        } else {
+            okHttpClient = new OkHttpClient.Builder()
+                    .connectTimeout(GenericConstants.CONNECTION_TIMEOUT, TimeUnit.SECONDS)
+                    .build();
+        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GenericConstants.SERVER_DEF_ENDPOINT)
