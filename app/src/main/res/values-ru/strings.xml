@@ -1,0 +1,80 @@
+<resources>
+    <string name="app_name">Погода</string>
+    <string name="app_terms_link">https://onedrive.live.com/view.aspx?resid=D27DD8466775BA4B!389844&amp;ithint=file%2cdocx&amp;authkey=!ABv7NHKvqk4PIyo</string>
+
+    <string name="txt_warn">Предупреждение</string>
+    <string name="txt_no_loc_permissions">Вы не приняли разрешение на определение местоположения. Вы можете включить его вручную через Настройки -> Приложения -> Это приложение -> Разрешения</string>
+    <string name="txt_dismiss">Отклонить</string>
+
+    <string name="txt_oops">К сожалению, что-то пошло не так, попробуйте позже.</string>
+    <string name="txt_err_no_network">Пожалуйста, подключитесь к Интернету и попробуйте снова.</string>
+    <string name="txt_upgrade_connectin">Соединение не установлено. Пожалуйста, попробуйте позже</string>
+    <string name="txt_oops_loading_html">К сожалению, мы не можем загрузить ваш контент</string>
+    <string name="error_txt_no_mail">К сожалению, у вас нет приложения для отправки электронной почты</string>
+    <string name="error_open_google_play">К сожалению, мы не можем открыть Google Play на вашем устройстве. Пожалуйста, убедитесь, что Сервисы Google Play установлены и доступно интернет-соединение.</string>
+    <string name="txt_err_upgrade">Извините,произошла неожиданная ошибка. Убедитесь, что ваше устройство подключено к активной учетной записи Google и имеет последнюю версию Сервисов Google Play.</string>
+    <string name="txt_worning_pro_done">Платеж прошел успешно!</string>
+
+
+    <string name="txt_no_loc">Служба определения местоположения отключена. Пожалуйста, включите его в настройках устройства</string>
+    <string name="txt_enable">Открыть настройки</string>
+
+    <string name="txt_details">Подробнее</string>
+    <string name="txt_next_days">Погода на ближайшие 10 дней</string>
+    <string name="txt_detailed">Подробнее</string>
+
+    <string name="txt_wind">Ветер</string>
+    <string name="txt_uv">УФ индекс</string>
+    <string name="txt_feels">По ощущению</string>
+    <string name="txt_press">Давление</string>
+    <string name="txt_hum">Влажность</string>
+    <string name="txt_vis">Видимость</string>
+    <string name="txt_weather_24">Погода на 24 часа</string>
+
+    <string name="txt_today">Сегодня</string>
+    <string name="txt_tomorrow">Завтра</string>
+
+    <string name="txt_my_loc">Мои местоположения</string>
+    <string name="txt_no_places">Нет избранных локаций</string>
+    <string name="txt_no_places_hint">Но Вы можете быстро добавить новую локацию</string>
+
+    <string name="txt_del_loc">Вы уверены, что хотите удалить это место?</string>
+    <string name="txt_no_data">Данные недоступны</string>
+
+    <string name="txt_settings">Настройки</string>
+    <string name="txt_setting_legal">Юридическая информация</string>
+    <string name="txt_about">О нас</string>
+    <string name="txt_terms">Условия использования</string>
+
+    <string name="txt_pro">PRO возможности</string>
+
+    <string name="rate_us">Оцените нас</string>
+    <string name="supp">Оставить отзыв</string>
+    <string name="txt_mesre">Единицы измерения</string>
+    <string name="txt_mes_temp">Температура</string>
+    <string name="txt_mes_speed">Скорость ветра</string>
+    <string name="txt_mes_press">Давление</string>
+
+    <string name="txt_interaction">Взаимодействие</string>
+    <string name="txt_det_weather">Подробная погода</string>
+
+    <string name="txt_ask_loc">Нам нужно, чтобы Вы позволили обнаружение местоположения или Вы можете установить его вручную</string>
+    <string name="txt_allow">Разрешить</string>
+    <string name="txt_set_manually">Установить вручную</string>
+
+    <string name="txt_def_notific">Проверьте Ваше новое обновление</string>
+
+    <string name="txt_no_ads">Без рекламы навсегда</string>
+    <string name="txt_no_lock">Разблокировать 24 часа погоды</string>
+    <string name="txt_buy_all">Нет рекламы + разблокировать 24 часа погоды</string>
+    <string name="txt_buy_now">Купить сейчас за</string>
+    <string name="txt_buy_deal">Сэкономьте 25%</string>
+
+
+    <string name="txt_price_int_ads">129</string>
+    <string name="txt_price_float_ads">00</string>
+    <string name="txt_price_int_full">199</string>
+    <string name="txt_price_float_full">00</string>
+    <string name="txt_price_end_cur">₽</string>
+
+</resources>

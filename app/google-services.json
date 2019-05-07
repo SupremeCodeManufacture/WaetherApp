@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:823663705846:android:2e2c0eef09e28fa0",
+        "mobilesdk_app_id": "1:823663705846:android:8d474b2846b2f946",
         "android_client_info": {
-          "package_name": "com.SupremeManufacture.weather"
+          "package_name": "com.supreme.manufacture.weather"
         }
       },
       "oauth_client": [

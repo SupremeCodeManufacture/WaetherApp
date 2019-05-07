@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="interaction"
+        android:title="@string/txt_interaction">
+
+        <PreferenceScreen
+            android:key="@string/stg_pro"
+            android:title="@string/txt_pro" />
+
+        <PreferenceScreen
+            android:key="@string/stg_rate"
+            android:title="@string/rate_us" />
+
+        <PreferenceScreen
+            android:key="@string/stg_support"
+            android:title="@string/supp" />
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/txt_mesre">
+        <ListPreference
+            android:defaultValue="°C"
+            android:entries="@array/temp_messures_names"
+            android:entryValues="@array/temp_messures_values"
+            android:key="@string/stg_temp"
+            android:summary="%s"
+            android:title="@string/txt_mes_temp" />
+
+        <ListPreference
+            android:defaultValue="kph"
+            android:entries="@array/wind_messures_names"
+            android:entryValues="@array/wind_messures_values"
+            android:key="@string/stg_wind_speed"
+            android:summary="%s"
+            android:title="@string/txt_mes_speed" />
+
+        <ListPreference
+            android:defaultValue="mb"
+            android:entries="@array/press_messures_names"
+            android:entryValues="@array/press_messures_values"
+            android:key="@string/stg_pressure"
+            android:summary="%s"
+            android:title="@string/txt_mes_press" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/txt_setting_legal">
+        <PreferenceScreen
+            android:key="@string/stg_terms"
+            android:title="@string/txt_terms" />
+
+        <PreferenceScreen
+            android:key="@string/stg_about"
+            android:title="@string/txt_about" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

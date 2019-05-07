@@ -1,17 +1,16 @@
 package logic.network;
 
 
-import com.SupremeManufacture.weather.R;
+import com.supreme.manufacture.weather.R;
 
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
 
 import data.App;
+import data.model.DataRs;
 import logic.async_await.OnAsyncDoneRsObjListener;
-import logic.helpers.DataFormatConverter;
+import logic.helpers.LangUtils;
 import logic.helpers.MyLogs;
 import logic.listeners.OnFetchDataErrListener;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,57 +18,35 @@ import retrofit2.Response;
 
 public class RequestManager {
 
+    public static void asyncGetForecastWeather(String q,
+                                               String days,
+                                               final OnAsyncDoneRsObjListener onDoneListener,
+                                               final OnFetchDataErrListener errListener) {
 
-    public static void execGetSalons(String reqPath,
-                                     Map<String, String> queryParams,
-                                     List<String> filters,
-                                     OnAsyncDoneRsObjListener onDoneListener,
-                                     OnFetchDataErrListener errListener) {
-        Call<ResponseBody> call = RestClient.get().getSalonsReq(reqPath, queryParams, filters);
-        execAsyncReq(call, onDoneListener, errListener);
-    }
-
-    public static void execGetSalons(String reqPath,
-                                     OnAsyncDoneRsObjListener onDoneListener,
-                                     OnFetchDataErrListener errListener) {
-        Call<ResponseBody> call = RestClient.get().getReq(reqPath);
-        execAsyncReq(call, onDoneListener, errListener);
-    }
-
-    public static void execPost(final String reqPath,
-                                final Map<String, String> params,
-                                final OnAsyncDoneRsObjListener onDoneListener,
-                                final OnFetchDataErrListener errListener) {
-        Call<ResponseBody> call = RestClient.get().postReqNew(reqPath, params);
-        execAsyncReq(call, onDoneListener, errListener);
-    }
-
-    private static void execAsyncReq(Call<ResponseBody> call,
-                                     final OnAsyncDoneRsObjListener onDoneListener,
-                                     final OnFetchDataErrListener errListener) {
         if (NetworkState.isNetworkAvailable()) {
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, final Response<ResponseBody> response) {
-                    if (response.isSuccessful()) {
-                        MyLogs.LOG("RequestManager", "execAsyncReq", "isSuccessful");
+            String key = App.getAppCtx().getResources().getString(R.string.api_key);
+            String lang = LangUtils.getselectedLanguage();
 
-//                        DataBindUtil.asyncHandleSuccessReq(response, onDoneListener);
-                        String jsonStr = DataFormatConverter.getJsonRs(response);
+            Call<DataRs> call = RestClient.get().getData(key, q, lang, days);
+            call.enqueue(new Callback<DataRs>() {
+                @Override
+                public void onResponse(Call<DataRs> call, final Response<DataRs> response) {
+                    if (response.isSuccessful()) {
+                        //MyLogs.LOG("RequestManager", "execAsyncReq", "isSuccessful");
 
                         if (onDoneListener != null)
-                            onDoneListener.onDone(jsonStr);
+                            onDoneListener.onDone(response.body());
 
                     } else {
-                        MyLogs.LOG("RequestManager", "execAsyncReq", "onResponse --> ERROR not succesfull result");
+                        //MyLogs.LOG("RequestManager", "execAsyncReq", "onResponse --> ERROR not succesfull result");
                         if (errListener != null)
                             errListener.onErrNptify(ErrorHandler.getErrMsgFromRs(response));
                     }
                 }
 
                 @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    MyLogs.LOG("RequestManager", "execAsyncReq", "onFailure --> ERROR: " + t.getMessage());
+                public void onFailure(Call<DataRs> call, Throwable t) {
+                    //MyLogs.LOG("RequestManager", "execAsyncReq", "onFailure --> ERROR: " + t.getMessage());
                     t.printStackTrace();
                     if (errListener != null)
                         errListener.onErrNptify(ErrorHandler.getFriendlyError(t));
@@ -77,9 +54,35 @@ public class RequestManager {
             });
 
         } else {
-            MyLogs.LOG("RequestManager", "execAsyncReq", "onFailure --> WARNING no connection");
+            //MyLogs.LOG("RequestManager", "execAsyncReq", "onFailure --> WARNING no connection");
             if (errListener != null)
                 errListener.onErrNptify(App.getAppCtx().getResources().getString(R.string.txt_err_no_network));
         }
+    }
+
+
+    public static DataRs syncGetCurWeather(String q) {
+        if (NetworkState.isNetworkAvailable()) {
+            String key = App.getAppCtx().getResources().getString(R.string.api_key);
+            String lang = LangUtils.getselectedLanguage();
+
+            try {
+                Call<DataRs> call = RestClient.get().getData(key, q, lang, "1");
+                Response<DataRs> response = call.execute();
+
+                if (response != null && response.body() != null && response.isSuccessful()) {
+                    //MyLogs.LOG("RequestManager", "syncGetCurWeather", "onResponse --> code: " + response.code());
+                    return response.body();
+
+                } else {
+                    //MyLogs.LOG("RequestManager", "syncGetCurWeather", "onFailure --> ERROR something wrong with result");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return new DataRs();
     }
 }

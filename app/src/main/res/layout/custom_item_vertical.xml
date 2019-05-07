@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="100dp"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/material_s_half"
+    android:paddingBottom="@dimen/material_s_half"
+    tools:background="@color/primary">
+
+    <TextView
+        android:id="@+id/tv_temp"
+        style="@style/TextBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="-88°C" />
+
+    <RelativeLayout
+        android:layout_width="20dp"
+        android:layout_height="90dp">
+
+        <View
+            android:id="@+id/view_temp"
+            android:layout_width="20dp"
+            android:layout_height="90dp"
+            android:background="@color/primary_dark" />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tv_wind"
+        style="@style/TextBoxSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="99.99 km/h" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="@dimen/material_s_half"
+        android:background="@color/white_50" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        style="@style/TextBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="14:00" />
+
+</LinearLayout>
