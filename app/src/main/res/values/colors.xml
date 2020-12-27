@@ -11,14 +11,11 @@
 
     <color name="primary_text">#FFFFFF</color>
     <color name="secondary_text">#BFFFFFFF</color>
-    <color name="divider">#BDBDBD</color>
 
     <color name="white_50">#80FFFFFF</color>
 
-    <color name="primary_text_normal">#263238</color>
     <color name="secondary_text_normal">#90A4AE</color>
 
     <color name="white">#FFFFFF</color>
-    <color name="light_gray">#80DDDDDD</color>
 
 </resources>

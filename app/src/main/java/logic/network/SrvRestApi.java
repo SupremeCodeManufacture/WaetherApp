@@ -7,7 +7,9 @@ import retrofit2.http.Query;
 
 public interface SrvRestApi {
 
-    @GET("forecast.json")
-    Call<DataRs> getData(@Query("key") String key, @Query("q") String q, @Query("lang") String lang, @Query("days") String days);
-
+    @GET("current")
+    Call<DataRs> getData(
+            @Query("access_key") String key,
+            @Query("query") String q,
+            @Query("units") String units);
 }

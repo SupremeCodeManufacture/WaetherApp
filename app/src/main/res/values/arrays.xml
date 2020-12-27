@@ -1,34 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="temp_messures_names" >
-        <item>Celsius degrees</item>
-        <item>Fahrenheit degrees</item>
-    </string-array>
-
     <string-array name="temp_messures_values" translatable="false">
-        <item>°C</item>
-        <item>°F</item>
+        <item>m</item>
+        <item>s</item>
+        <item>f</item>
     </string-array>
 
-    <string-array name="wind_messures_names">
-        <item>Kilometers per hour</item>
-        <item>Miles per hour</item>
-    </string-array>
-
-    <string-array name="wind_messures_values" translatable="false">
-        <item>kph</item>
-        <item>mph</item>
-    </string-array>
-
-    <string-array name="press_messures_names">
-        <item>Millibars</item>
-        <item>Inches of Mercury</item>
-    </string-array>
-
-    <string-array name="press_messures_values" translatable="false">
-        <item>mb</item>
-        <item>in</item>
+    <string-array name="temp_messures_systems" >
+        <item>Metric</item>
+        <item>Scientific</item>
+        <item>Fahrenheit</item>
     </string-array>
 
 </resources>

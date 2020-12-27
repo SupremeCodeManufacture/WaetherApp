@@ -1,9 +1,13 @@
 package logic.push_notification;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.supreme.manufacture.weather.R;
+import com.student.adminweather.R;
 
 import data.App;
 import data.GenericConstants;
@@ -16,49 +20,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        //MyLogs.LOG("MyFirebaseMessagingService", "onMessageReceived", "FROM: " + remoteMessage.getFrom());
-
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            //MyLogs.LOG("MyFirebasCloudDataObjeMessagingService", "onMessageReceived", "DATA: " + remoteMessage.getData().toString());
-            CloudDataObj cloudDataObj = DataFormatConverter.getObjFromJson(remoteMessage.getData().toString());
-            if (cloudDataObj != null) {
+            CloudDataObj cloudDataObj = DataFormatConverter.getObjFromRemoteMsg(remoteMessage);
 
-                //show notification
-                if (cloudDataObj.getUserNotification() != null) {
-                    if (cloudDataObj.getToDo() != null && cloudDataObj.getToDo().equals(GenericConstants.CMD_GO_TO_PLAYSTORE)) {
-                        Notifications.showFCMNotification(
-                                cloudDataObj.getUserNotification().getNotificId(),
-                                cloudDataObj.getUserNotification().getSenderName(),
-                                cloudDataObj.getUserNotification().getText(),
-                                DataFormatConverter.safeConvertUrlToUri("https://play.google.com/store/apps/details?id=" + App.getAppCtx().getPackageName()));
-
-                    } else if (cloudDataObj.getToDo() != null && cloudDataObj.getToDo().equals(GenericConstants.CMD_PROMOTE_APP)) {
-                        Notifications.showFCMNotification(
-                                cloudDataObj.getUserNotification().getNotificId(),
-                                cloudDataObj.getUserNotification().getSenderName(),
-                                cloudDataObj.getUserNotification().getText(),
-                                DataFormatConverter.safeConvertUrlToUri(cloudDataObj.getPromoLink()));
-
-                    } else if (cloudDataObj.getToDo() != null && cloudDataObj.getToDo().equals(GenericConstants.CMD_PROMO_FAKE)) {
-                        Notifications.fakePromo(cloudDataObj.getUserNotification().getSenderName(),
-                                cloudDataObj.getUserNotification().getText(),
-                                DataFormatConverter.safeConvertUrlToUri(cloudDataObj.getPromoLink()));
-
-                    } else {
-                        Notifications.showFCMNotification(
-                                cloudDataObj.getUserNotification().getNotificId(),
-                                cloudDataObj.getUserNotification().getSenderName(),
-                                cloudDataObj.getUserNotification().getText(),
-                                null);
-                    }
-                }
+            //show notification by custom data
+            if (cloudDataObj != null && cloudDataObj.getUserNotification() != null) {
+                Notifications.showFCMNotification(
+                        cloudDataObj.getUserNotification().getNotificId(),
+                        cloudDataObj.getUserNotification().getSenderName(),
+                        cloudDataObj.getUserNotification().getText(),
+                        cloudDataObj.getTipText());
             }
         }
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            //MyLogs.LOG("MyFirebaseMessagingService", "onMessageReceived", "NOTIFICATION: " + remoteMessage.getNotification().getBody());
+            MyLogs.LOG("MyFirebaseMessagingService", "onMessageReceived", "NOTIFICATION: " + remoteMessage.getNotification().getBody());
             Notifications.showFCMNotification(1,
                     App.getAppCtx().getResources().getString(R.string.app_name),
                     remoteMessage.getNotification().getBody(),
@@ -69,10 +47,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(String token) {
         //subscribe to notifications topic & send it to server
-        //MyLogs.LOG("MyFirebaseMessagingService", "onNewToken", "token: " + token);
-        FirebaseMessaging.getInstance().subscribeToTopic(GenericConstants.TOPIC_ALL);
+        MyLogs.LOG("MyFirebaseMessagingService", "onNewToken", "token: " + token);
+        FirebaseMessaging.getInstance().subscribeToTopic(GenericConstants.TOPIC_ALL)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        MyLogs.LOG("MyFirebaseMessagingService", "onNewToken", "registered to topic: " + task.isSuccessful());
+                    }
+                });
 
         super.onNewToken(token);
     }
-
 }

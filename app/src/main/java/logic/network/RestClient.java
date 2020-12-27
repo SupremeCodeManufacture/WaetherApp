@@ -1,6 +1,6 @@
 package logic.network;
 
-import com.supreme.manufacture.weather.BuildConfig;
+import com.student.adminweather.BuildConfig;
 
 import java.util.concurrent.TimeUnit;
 

@@ -1,7 +1,7 @@
 package logic.network;
 
 import com.google.gson.Gson;
-import com.supreme.manufacture.weather.R;
+import com.student.adminweather.R;
 
 import data.App;
 import data.model.DataRs;

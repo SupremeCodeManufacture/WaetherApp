@@ -1,39 +1,36 @@
 {
   "project_info": {
-    "project_number": "823663705846",
-    "firebase_url": "https://weather-40d77.firebaseio.com",
-    "project_id": "weather-40d77",
-    "storage_bucket": "weather-40d77.appspot.com"
+    "project_number": "801830530013",
+    "project_id": "farmer-weather",
+    "storage_bucket": "farmer-weather.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:823663705846:android:8d474b2846b2f946",
+        "mobilesdk_app_id": "1:801830530013:android:51037454896fc810ab6434",
         "android_client_info": {
-          "package_name": "com.supreme.manufacture.weather"
+          "package_name": "com.student.adminweather"
         }
       },
       "oauth_client": [
         {
-          "client_id": "823663705846-55s6hdmjbnmrt0v8jr3heucum02knnj5.apps.googleusercontent.com",
+          "client_id": "801830530013-r6p8id9kp8imat48dtcgkfobc96ka02v.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBHy25onjhyd61MPfndera7e97TmJeiSX8"
+          "current_key": "AIzaSyAzhFVX3uSLN5yZVhnxv_a1smZzVDjO5IU"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "801830530013-r6p8id9kp8imat48dtcgkfobc96ka02v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

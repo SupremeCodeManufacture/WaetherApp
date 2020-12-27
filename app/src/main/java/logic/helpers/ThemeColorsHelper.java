@@ -1,6 +1,6 @@
 package logic.helpers;
 
-import com.supreme.manufacture.weather.R;
+import com.student.adminweather.R;
 
 public class ThemeColorsHelper {
 

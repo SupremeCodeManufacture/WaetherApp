@@ -10,15 +10,12 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
-
-import com.google.android.gms.ads.AdSize;
-import com.soloviof.easyads.AdsRepo;
-import com.soloviof.easyads.CustomizeAds;
-import com.supreme.manufacture.weather.R;
-import com.supreme.manufacture.weather.databinding.ActivityBrowserBinding;
 
 import androidx.databinding.DataBindingUtil;
+
+import com.student.adminweather.R;
+import com.student.adminweather.databinding.ActivityBrowserBinding;
+
 import data.App;
 import data.GenericConstants;
 import logic.helpers.MyLogs;
@@ -41,8 +38,6 @@ public class WebBrowserActivity extends BaseActivity implements View.OnClickList
         mActivityBinding.toolbarWeb.setBackgroundResource(ThemeColorsHelper.getColorPrimary(App.isDAY()));
         mActivityBinding.tvToolbarPlace.setText(getIntent().getStringExtra(GenericConstants.KEY_EXTRA_BROWSER_TITLE));
         loadHtmlData(getIntent().getStringExtra(GenericConstants.KEY_EXTRA_BROWSER_LINK));
-
-        setupAdBanner(mActivityBinding.zoneBanner.llBanner,WebBrowserActivity.this,"web screen"  );
     }
 
 
@@ -52,12 +47,12 @@ public class WebBrowserActivity extends BaseActivity implements View.OnClickList
         mActivityBinding.web.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-               onProgressShow(mActivityBinding.progressBar);
+                onProgressShow(mActivityBinding.progressBar);
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                //MyLogs.LOG("WebBrowserActivity", "setupClient", "onPageFinished");
+                MyLogs.LOG("WebBrowserActivity", "setupClient", "onPageFinished");
                 onProgressDismiss(mActivityBinding.progressBar);
             }
 
@@ -69,20 +64,20 @@ public class WebBrowserActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                //MyLogs.LOG("WebBrowserActivity", "setupClient", "error: " + error.toString());
+                MyLogs.LOG("WebBrowserActivity", "setupClient", "error: " + error.toString());
                 super.onReceivedError(view, request, error);
             }
 
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-                //MyLogs.LOG("WebBrowserActivity", "setupClient", "error: " + errorResponse.toString());
+                MyLogs.LOG("WebBrowserActivity", "setupClient", "error: " + errorResponse.toString());
                 super.onReceivedHttpError(view, request, errorResponse);
             }
         });
     }
 
     private void loadHtmlData(String urlToLoad) {
-        //MyLogs.LOG("WebBrowserActivity", "loadHtmlData", "urlToLoad: " + urlToLoad);
+        MyLogs.LOG("WebBrowserActivity", "loadHtmlData", "urlToLoad: " + urlToLoad);
 
         if (NetworkState.isNetworkAvailable()) {
             if (urlToLoad != null && URLUtil.isValidUrl(urlToLoad)) {
@@ -106,15 +101,10 @@ public class WebBrowserActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_back:
                 WebBrowserActivity.this.onBackPressed();
-            break;
+                break;
         }
-    }
-
-    @Override
-    void decideDemoOrPro() {
-        //no need to implement
     }
 }
